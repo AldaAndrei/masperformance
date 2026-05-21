@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact | Mas Performance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- PHP INCLUDE START: navbar -->
+  <header class="navbar" style="background: rgba(10, 10, 10, 1);">
+    <a href="index.html" class="logo"><img src="assets/images/logo.svg" alt="Mas Performance" class="logo-img"></a>
+    <nav class="nav-links">
+      <a href="index.html" data-lang-key="nav.home">Acasă</a>
+      <a href="about.html" data-lang-key="nav.about">Despre Noi</a>
+      <a href="tuning-database.html" data-lang-key="nav.tuning_db">Bază Date Tuning</a>
+      <a href="projects.html" data-lang-key="nav.projects">Proiecte</a>
+      <a href="contact.html" data-lang-key="nav.contact">Contact</a>
+    </nav>
+    <div class="lang-switch">
+      <span data-lang="ro" class="active">RO</span> | <span data-lang="en">EN</span>
+    </div>
+  </header>
+  <!-- PHP INCLUDE END: navbar -->
+
+  <div class="page-header">
+    <h1><span data-lang-key="contact.page.title.1">Contactează</span> <span class="text-accent" data-lang-key="contact.page.title.2">Echipa</span></h1>
+  </div>
+
+  <section class="section">
+    <div class="contact-grid">
+      
+      <!-- Contact Form -->
+      <div>
+        <form id="contact-form">
+          <div class="form-group">
+            <label for="fullname" data-lang-key="contact.form.name">Nume Complet *</label>
+            <input type="text" id="fullname" class="form-control" required>
+            <div class="error-msg">This field is required.</div>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label for="email" data-lang-key="contact.form.email">Adresă Email *</label>
+              <input type="email" id="email" class="form-control" required>
+              <div class="error-msg">Valid email required.</div>
+            </div>
+            <div class="form-group">
+              <label for="phone" data-lang-key="contact.form.phone">Număr Telefon *</label>
+              <input type="tel" id="phone" value="+40" class="form-control" required>
+              <div class="error-msg">Valid phone required.</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label for="brand" data-lang-key="contact.form.brand">Marca Auto *</label>
+              <select id="brand" class="form-control" required>
+                <option value="">-- Select --</option>
+                <option value="Audi">Audi</option>
+                <option value="BMW">BMW</option>
+                <option value="Mercedes">Mercedes-Benz</option>
+                <option value="VW">Volkswagen</option>
+                <option value="Skoda">Skoda</option>
+                <option value="Renault">Renault</option>
+                <option value="Ford">Ford</option>
+                <option value="Opel">Opel</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="error-msg">This field is required.</div>
+            </div>
+            <div class="form-group">
+              <label for="model" data-lang-key="contact.form.model">Model *</label>
+              <input type="text" id="model" class="form-control" required>
+              <div class="error-msg">This field is required.</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label for="year" data-lang-key="contact.form.year">An Fabricație *</label>
+              <input type="number" id="year" class="form-control" min="1990" max="2025" required>
+              <div class="error-msg">Required.</div>
+            </div>
+            <div class="form-group">
+              <label for="engine" data-lang-key="contact.form.engine">Motorizare *</label>
+              <input type="text" id="engine" class="form-control" placeholder="ex: 2.0 TDI" required>
+              <div class="error-msg">Required.</div>
+            </div>
+            <div class="form-group">
+              <label for="fuel" data-lang-key="contact.form.fuel">Tip Combustibil</label>
+              <select id="fuel" class="form-control">
+                <option value="Diesel">Diesel</option>
+                <option value="Petrol">Petrol</option>
+                <option value="Hybrid">Hybrid</option>
+                <option value="Electric">Electric</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="mileage" data-lang-key="contact.form.mileage">Kilometraj Actual (km)</label>
+            <input type="number" id="mileage" class="form-control">
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="details" data-lang-key="contact.form.details">Detalii Suplimentare</label>
+            <textarea id="details" class="form-control"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+            <div class="form-group">
+              <label data-lang-key="contact.form.method">Metoda Preferată de Contact</label>
+              <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                <label class="radio-label"><input type="radio" name="method" value="Phone" checked> Phone</label>
+                <label class="radio-label"><input type="radio" name="method" value="WhatsApp"> WhatsApp</label>
+                <label class="radio-label"><input type="radio" name="method" value="Email"> Email</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="time" data-lang-key="contact.form.time">Timpul Preferat</label>
+              <select id="time" class="form-control">
+                <option value="Any">Any Time</option>
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+                <option value="Evening">Evening</option>
+              </select>
+            </div>
+          </div>
+
+          <input type="submit" value="Trimite Cererea" class="btn btn-primary" style="width: 100%; margin-top: 1rem;" data-lang-key="contact.form.submit">
+        </form>
+      </div>
+
+      <!-- Info Card -->
+      <div>
+        <div class="contact-info-card">
+          <h3 style="margin-bottom: 2rem;" data-lang-key="contact.info.title">Informații Contact</h3>
+          
+          <div class="info-item">
+            <h4>Phone & WhatsApp</h4>
+            <p><a href="tel:+40700000000">+40 700 000 000</a></p>
+          </div>
+          
+          <div class="info-item">
+            <h4>Email</h4>
+            <p><a href="mailto:contact@masperformance.ro">contact@masperformance.ro</a></p>
+          </div>
+          
+          <div class="info-item">
+            <h4 data-lang-key="contact.info.address">Adresă</h4>
+            <p>Bulevardul Iuliu Maniu nr. 1, Sector 6<br>București, România</p>
+          </div>
+          
+          <div class="info-item">
+            <h4 data-lang-key="contact.info.hours">Program</h4>
+            <p>Luni - Vineri: 09:00 - 18:00<br>Sâmbătă - Duminică: Închis</p>
+          </div>
+
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2848.8444458310034!2d26.0469443!3d44.4363889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDI2JzExLjAiTiAyNsKwMDInNDkuMCJF!5e0!3m2!1sen!2sro!4v1620000000000!5m2!1sen!2sro" class="map-embed" allowfullscreen="" loading="lazy"></iframe>
+
+          <div class="social-links">
+            <a href="#"><img src="assets/images/fb.svg" alt="Facebook"></a>
+            <a href="#"><img src="assets/images/ig.svg" alt="Instagram"></a>
+            <a href="#"><img src="assets/images/yt.svg" alt="YouTube"></a>
+            <a href="#"><img src="assets/images/tk.svg" alt="TikTok"></a>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- PHP INCLUDE START: footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <a href="index.html" class="logo footer-logo"><img src="assets/images/logo.svg" alt="Mas Performance" class="logo-img"></a>
+        <p class="text-muted" data-lang-key="footer.desc">Profesioniști în optimizarea software a ECU-ului pentru creșterea performanței și eficienței.</p>
+      </div>
+      <div>
+        <h4 data-lang-key="footer.links">Link-uri Rapide</h4>
+        <ul>
+          <li><a href="about.html" data-lang-key="nav.about">Despre Noi</a></li>
+          <li><a href="tuning-database.html" data-lang-key="nav.tuning_db">Bază Date Tuning</a></li>
+          <li><a href="projects.html" data-lang-key="nav.projects">Proiecte</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 data-lang-key="footer.contact">Contact</h4>
+        <ul>
+          <li class="text-muted">+40 700 000 000</li>
+          <li class="text-muted">contact@masperformance.ro</li>
+          <li class="text-muted">București, România</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom" data-lang-key="footer.rights">
+      © 2025 Mas Performance. Toate drepturile rezervate.
+    </div>
+  </footer>
+  <!-- PHP INCLUDE END: footer -->
+
+  <script src="js/lang.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
+
+
+
