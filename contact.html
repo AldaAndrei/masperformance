@@ -13,7 +13,7 @@
 
   <!-- PHP INCLUDE START: navbar -->
   <header class="navbar" style="background: rgba(10, 10, 10, 1);">
-    <a href="index.html" class="logo"><img src="assets/images/logo.svg" alt="Mas Performance" class="logo-img"></a>
+    <a href="index.html" class="logo"><img src="assets/images/MasPerformance.svg" alt="Mas Performance" class="logo-img"></a>
     <nav class="nav-links">
       <a href="index.html" data-lang-key="nav.home">Acasă</a>
       <a href="about.html" data-lang-key="nav.about">Despre Noi</a>
@@ -40,19 +40,19 @@
           <div class="form-group">
             <label for="fullname" data-lang-key="contact.form.name">Nume Complet *</label>
             <input type="text" id="fullname" class="form-control" required>
-            <div class="error-msg">This field is required.</div>
+            <div class="error-msg" data-lang-key="contact.form.error.required">Acest câmp este obligatoriu.</div>
           </div>
           
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
             <div class="form-group">
               <label for="email" data-lang-key="contact.form.email">Adresă Email *</label>
               <input type="email" id="email" class="form-control" required>
-              <div class="error-msg">Valid email required.</div>
+              <div class="error-msg" data-lang-key="contact.form.error.email">Adresă de email invalidă.</div>
             </div>
             <div class="form-group">
               <label for="phone" data-lang-key="contact.form.phone">Număr Telefon *</label>
               <input type="tel" id="phone" value="+40" class="form-control" required>
-              <div class="error-msg">Valid phone required.</div>
+              <div class="error-msg" data-lang-key="contact.form.error.phone">Număr de telefon invalid.</div>
             </div>
           </div>
 
@@ -72,12 +72,12 @@
                 <option value="Toyota">Toyota</option>
                 <option value="Other">Other</option>
               </select>
-              <div class="error-msg">This field is required.</div>
+              <div class="error-msg" data-lang-key="contact.form.error.required">Acest câmp este obligatoriu.</div>
             </div>
             <div class="form-group">
               <label for="model" data-lang-key="contact.form.model">Model *</label>
               <input type="text" id="model" class="form-control" required>
-              <div class="error-msg">This field is required.</div>
+              <div class="error-msg" data-lang-key="contact.form.error.required">Acest câmp este obligatoriu.</div>
             </div>
           </div>
 
@@ -85,20 +85,20 @@
             <div class="form-group">
               <label for="year" data-lang-key="contact.form.year">An Fabricație *</label>
               <input type="number" id="year" class="form-control" min="1990" max="2025" required>
-              <div class="error-msg">Required.</div>
+              <div class="error-msg" data-lang-key="contact.form.error.short_required">Obligatoriu.</div>
             </div>
             <div class="form-group">
               <label for="engine" data-lang-key="contact.form.engine">Motorizare *</label>
               <input type="text" id="engine" class="form-control" placeholder="ex: 2.0 TDI" required>
-              <div class="error-msg">Required.</div>
+              <div class="error-msg" data-lang-key="contact.form.error.short_required">Obligatoriu.</div>
             </div>
             <div class="form-group">
               <label for="fuel" data-lang-key="contact.form.fuel">Tip Combustibil</label>
               <select id="fuel" class="form-control">
-                <option value="Diesel">Diesel</option>
-                <option value="Petrol">Petrol</option>
-                <option value="Hybrid">Hybrid</option>
-                <option value="Electric">Electric</option>
+                <option value="Diesel" data-lang-key="contact.form.fuel.diesel">Diesel</option>
+                <option value="Petrol" data-lang-key="contact.form.fuel.petrol">Benzină</option>
+                <option value="Hybrid" data-lang-key="contact.form.fuel.hybrid">Hibrid</option>
+                <option value="Electric" data-lang-key="contact.form.fuel.electric">Electric</option>
               </select>
             </div>
           </div>
@@ -119,18 +119,18 @@
             <div class="form-group">
               <label data-lang-key="contact.form.method">Metoda Preferată de Contact</label>
               <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
-                <label class="radio-label"><input type="radio" name="method" value="Phone" checked> Phone</label>
-                <label class="radio-label"><input type="radio" name="method" value="WhatsApp"> WhatsApp</label>
-                <label class="radio-label"><input type="radio" name="method" value="Email"> Email</label>
+                <label class="radio-label"><input type="radio" name="method" value="Phone" checked> <span data-lang-key="contact.form.method.phone">Telefon</span></label>
+                <label class="radio-label"><input type="radio" name="method" value="WhatsApp"> <span data-lang-key="contact.form.method.whatsapp">WhatsApp</span></label>
+                <label class="radio-label"><input type="radio" name="method" value="Email"> <span data-lang-key="contact.form.method.email">Email</span></label>
               </div>
             </div>
             <div class="form-group">
               <label for="time" data-lang-key="contact.form.time">Timpul Preferat</label>
               <select id="time" class="form-control">
-                <option value="Any">Any Time</option>
-                <option value="Morning">Morning</option>
-                <option value="Afternoon">Afternoon</option>
-                <option value="Evening">Evening</option>
+                <option value="Any" data-lang-key="contact.form.time.any">Oricând</option>
+                <option value="Morning" data-lang-key="contact.form.time.morning">Dimineața</option>
+                <option value="Afternoon" data-lang-key="contact.form.time.afternoon">După-amiaza</option>
+                <option value="Evening" data-lang-key="contact.form.time.evening">Seara</option>
               </select>
             </div>
           </div>
@@ -145,32 +145,50 @@
           <h3 style="margin-bottom: 2rem;" data-lang-key="contact.info.title">Informații Contact</h3>
           
           <div class="info-item">
-            <h4>Phone & WhatsApp</h4>
+            <h4 data-lang-key="contact.info.phone_whatsapp">Telefon & WhatsApp</h4>
             <p><a href="tel:+40700000000">+40 700 000 000</a></p>
           </div>
           
           <div class="info-item">
-            <h4>Email</h4>
+            <h4 data-lang-key="contact.info.email_label">Email</h4>
             <p><a href="mailto:contact@masperformance.ro">contact@masperformance.ro</a></p>
           </div>
           
           <div class="info-item">
             <h4 data-lang-key="contact.info.address">Adresă</h4>
-            <p>Bulevardul Iuliu Maniu nr. 1, Sector 6<br>București, România</p>
+            <p data-lang-key="contact.info.address.val">Bulevardul Iuliu Maniu nr. 1, Sector 6<br>București, România</p>
           </div>
           
           <div class="info-item">
             <h4 data-lang-key="contact.info.hours">Program</h4>
-            <p>Luni - Vineri: 09:00 - 18:00<br>Sâmbătă - Duminică: Închis</p>
+            <p data-lang-key="contact.info.hours.val">Luni - Vineri: 09:00 - 18:00<br>Sâmbătă - Duminică: Închis</p>
           </div>
 
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2848.8444458310034!2d26.0469443!3d44.4363889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDTCsDI2JzExLjAiTiAyNsKwMDInNDkuMCJF!5e0!3m2!1sen!2sro!4v1620000000000!5m2!1sen!2sro" class="map-embed" allowfullscreen="" loading="lazy"></iframe>
 
           <div class="social-links">
-            <a href="#"><img src="assets/images/fb.svg" alt="Facebook"></a>
-            <a href="#"><img src="assets/images/ig.svg" alt="Instagram"></a>
-            <a href="#"><img src="assets/images/yt.svg" alt="YouTube"></a>
-            <a href="#"><img src="assets/images/tk.svg" alt="TikTok"></a>
+            <a href="#" aria-label="Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.518 3.545 12 3.545 12 3.545s-7.518 0-9.388.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.87.507 9.388.507 9.388.507s7.518 0 9.388-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </a>
+            <a href="#" aria-label="TikTok">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.74-3.99-1.72-.08-.07-.17-.17-.25-.25v6.52c-.02 2.32-.4 4.8-2.33 6.31-1.9 1.48-4.64 1.7-6.84 1.01-2.35-.74-4.24-2.73-4.73-5.17-.6-2.95.69-6.3 3.43-7.5 1.04-.46 2.18-.62 3.31-.54V12.2c-.89-.06-1.78.11-2.58.55-.99.55-1.69 1.58-1.79 2.73-.18 2.08 1.6 3.92 3.67 3.73 1.25-.11 2.33-.99 2.65-2.2.14-.54.14-1.11.14-1.67V.02z"/>
+              </svg>
+            </a>
           </div>
         </div>
       </div>
@@ -182,7 +200,7 @@
   <footer class="footer">
     <div class="footer-grid">
       <div>
-        <a href="index.html" class="logo footer-logo"><img src="assets/images/logo.svg" alt="Mas Performance" class="logo-img"></a>
+        <a href="index.html" class="logo footer-logo"><img src="assets/images/MasPerformance.svg" alt="Mas Performance" class="logo-img"></a>
         <p class="text-muted" data-lang-key="footer.desc">Profesioniști în optimizarea software a ECU-ului pentru creșterea performanței și eficienței.</p>
       </div>
       <div>

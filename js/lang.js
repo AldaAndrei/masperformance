@@ -93,7 +93,70 @@ const translations = {
     'db.table.engine': 'Motor',
     'db.table.stock': 'Stock',
     'db.table.stage1': 'Stage 1',
-    'db.table.stage2': 'Stage 2'
+    'db.table.stage2': 'Stage 2',
+
+    // About Page Additional
+    'about.heading': 'Pasiune pentru Performanță',
+    'about.p1': 'Suntem o echipă dedicată de ingineri și pasionați auto, cu un singur scop: să extragem potențialul ascuns al fiecărui motor, păstrând în același timp fiabilitatea și siguranța pe termen lung.',
+    'about.p2': 'Fiecare calibrare software (remap) este realizată in-house, personalizată pentru mașina ta și testată riguros.',
+    'about.bullet.licensed': 'Echipamente licențiate Alientech, Autotuner, MagicMotorsport',
+    'about.bullet.logging': 'Logare parametri în timp real',
+    'about.bullet.warranty': 'Garanție pe calibrarea software',
+
+    // Projects Page Additional
+    'projects.title.1': 'Proiecte',
+    'projects.title.2': 'Recente',
+    'projects.1.desc': 'Stage 2 + Custom Pops & Bangs',
+    'projects.2.desc': 'Stage 1 + DSG Tune',
+    'projects.3.desc': 'Stage 1 + EGR/DPF Off (Motorsport)',
+    'projects.tuned': 'Optimizat',
+
+    // Partners Section & Popup Details
+    'partners.title.1': 'Parteneri',
+    'partners.title.2': 'De Încredere',
+    'partners.sub': 'Colaborăm cu cei mai buni din industrie pentru a-ți oferi servicii de top.',
+    'partners.alientech.name': 'Alientech',
+    'partners.alientech.desc': 'Lider mondial în domeniul calibrării motorului și programării ECU, cunoscut pentru instrumente de top precum KESS3 și software-ul ECM Titanium.',
+    'partners.autel.name': 'Autel',
+    'partners.autel.desc': 'Producător de top de echipamente profesionale de diagnosticare auto, testere inteligente OBD2 și soluții avansate de analiză a sistemelor electronice.',
+    'partners.autotuner.name': 'Autotuner',
+    'partners.autotuner.desc': 'Echipament modern și ultra-rapid de tuning auto pentru citirea și scrierea ECU/TCU în modurile OBD, Bench și Boot, fără abonamente obligatorii.',
+    'partners.launch.name': 'Launch',
+    'partners.launch.desc': 'Pionier global în diagnosticarea auto avansată, oferind scanere OBD2 profesionale, sisteme de calibrare ADAS și echipamente de service de înaltă precizie.',
+    'partners.magicmotorsport.name': 'MagicMotorsport',
+    'partners.magicmotorsport.desc': 'Dezvoltator de soluții inovatoare pentru ateliere auto, faimos pentru instrumentul FLEX care facilitează programarea, repararea și clonarea ECU și TCU.',
+    'partners.obdstar.name': 'OBDSTAR',
+    'partners.obdstar.desc': 'Specializat în dezvoltarea de dispozitive profesionale pentru programare chei, calibrare module electronice și diagnoză avansată pentru vehicule, moto și ambarcațiuni.',
+    'partners.winols.name': 'WinOLS',
+    'partners.winols.desc': 'Standardul absolut în industria tuning-ului auto pentru modificarea hărților de injecție și editarea avansată a fișierelor binare din ECU.',
+
+    // Contact Form Additional
+    'contact.form.fuel.diesel': 'Diesel',
+    'contact.form.fuel.petrol': 'Benzină',
+    'contact.form.fuel.hybrid': 'Hibrid',
+    'contact.form.fuel.electric': 'Electric',
+    'contact.form.time.any': 'Oricând',
+    'contact.form.time.morning': 'Dimineața',
+    'contact.form.time.afternoon': 'După-amiaza',
+    'contact.form.time.evening': 'Seara',
+    'contact.form.method.phone': 'Telefon',
+    'contact.form.method.whatsapp': 'WhatsApp',
+    'contact.form.method.email': 'Email',
+    'contact.form.error.required': 'Acest câmp este obligatoriu.',
+    'contact.form.error.email': 'Adresă de email invalidă.',
+    'contact.form.error.phone': 'Număr de telefon invalid.',
+    'contact.form.error.short_required': 'Obligatoriu.',
+    'contact.form.sending': 'Se trimite...',
+    'contact.form.sent': 'Trimis cu succes!',
+    'contact.info.phone_whatsapp': 'Telefon & WhatsApp',
+    'contact.info.email_label': 'Email',
+    'contact.info.address.val': 'Bulevardul Iuliu Maniu nr. 1, Sector 6, București, România',
+    'contact.info.hours.val': 'Luni - Vineri: 09:00 - 18:00, Sâmbătă - Duminică: Închis',
+
+    // Reviews Additional
+    'reviews.1.text': '"Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu 1L/100km la mers constant. Profesioniști adevărați."',
+    'reviews.2.text': '"Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au explicat tot procesul pas cu pas."',
+    'reviews.3.text': '"Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată plaja de turații."'
   },
   en: {
     // Navigation
@@ -189,7 +252,70 @@ const translations = {
     'db.table.engine': 'Engine',
     'db.table.stock': 'Stock',
     'db.table.stage1': 'Stage 1',
-    'db.table.stage2': 'Stage 2'
+    'db.table.stage2': 'Stage 2',
+
+    // About Page Additional
+    'about.heading': 'Passion for Performance',
+    'about.p1': 'We are a dedicated team of engineers and car enthusiasts with a single goal: to extract the hidden potential of each engine while keeping long-term reliability and safety intact.',
+    'about.p2': 'Each software calibration (remap) is developed in-house, custom tailored to your vehicle and rigorously tested.',
+    'about.bullet.licensed': 'Licensed equipment from Alientech, Autotuner, MagicMotorsport',
+    'about.bullet.logging': 'Real-time parameter logging',
+    'about.bullet.warranty': 'Software calibration warranty included',
+
+    // Projects Page Additional
+    'projects.title.1': 'Recent',
+    'projects.title.2': 'Projects',
+    'projects.1.desc': 'Stage 2 + Custom Pops & Bangs',
+    'projects.2.desc': 'Stage 1 + DSG Tune',
+    'projects.3.desc': 'Stage 1 + EGR/DPF Off (Motorsport)',
+    'projects.tuned': 'Tuned',
+
+    // Partners Section & Popup Details
+    'partners.title.1': 'Trusted',
+    'partners.title.2': 'Partners',
+    'partners.sub': 'We collaborate with the best in the industry to offer you top-notch services.',
+    'partners.alientech.name': 'Alientech',
+    'partners.alientech.desc': 'A world leader in engine calibration and ECU programming, renowned for state-of-the-art tools like KESS3 and ECM Titanium software.',
+    'partners.autel.name': 'Autel',
+    'partners.autel.desc': 'A premier manufacturer of professional automotive diagnostic equipment, smart OBD2 scanners, and advanced electronic system analysis tools.',
+    'partners.autotuner.name': 'Autotuner',
+    'partners.autotuner.desc': 'A modern and ultra-fast tuning tool for reading and writing ECU/TCU in OBD, Bench, and Boot modes, featuring a subscription-free model.',
+    'partners.launch.name': 'Launch',
+    'partners.launch.desc': 'A global pioneer in advanced automotive diagnostics, providing professional OBD2 scanners, ADAS calibration systems, and high-precision service equipment.',
+    'partners.magicmotorsport.name': 'MagicMotorsport',
+    'partners.magicmotorsport.desc': 'Developer of innovative solutions for tuning workshops, famous for the FLEX tool which enables easy programming, repair, and cloning of ECU and TCU modules.',
+    'partners.obdstar.name': 'OBDSTAR',
+    'partners.obdstar.desc': 'Specialized in professional key programming devices, electronic module calibration, and advanced diagnostics for cars, motorcycles, and marine vehicles.',
+    'partners.winols.name': 'WinOLS',
+    'partners.winols.desc': 'The absolute industry standard in automotive tuning for ECU map modification and advanced editing of engine binary files.',
+
+    // Contact Form Additional
+    'contact.form.fuel.diesel': 'Diesel',
+    'contact.form.fuel.petrol': 'Petrol',
+    'contact.form.fuel.hybrid': 'Hybrid',
+    'contact.form.fuel.electric': 'Electric',
+    'contact.form.time.any': 'Any Time',
+    'contact.form.time.morning': 'Morning',
+    'contact.form.time.afternoon': 'Afternoon',
+    'contact.form.time.evening': 'Evening',
+    'contact.form.method.phone': 'Phone',
+    'contact.form.method.whatsapp': 'WhatsApp',
+    'contact.form.method.email': 'Email',
+    'contact.form.error.required': 'This field is required.',
+    'contact.form.error.email': 'Valid email required.',
+    'contact.form.error.phone': 'Valid phone required.',
+    'contact.form.error.short_required': 'Required.',
+    'contact.form.sending': 'Sending...',
+    'contact.form.sent': 'Sent Successfully!',
+    'contact.info.phone_whatsapp': 'Phone & WhatsApp',
+    'contact.info.email_label': 'Email',
+    'contact.info.address.val': '1 Iuliu Maniu Boulevard, District 6, Bucharest, Romania',
+    'contact.info.hours.val': 'Monday - Friday: 09:00 - 18:00, Saturday - Sunday: Closed',
+
+    // Reviews Additional
+    'reviews.1.text': '"The car feels completely different. Power delivery is linear, and fuel consumption dropped by 1L/100km at constant speed. Real professionals."',
+    'reviews.2.text': '"I came for an EGR Off and left with Stage 1. Highly recommend, they explained the whole process step by step."',
+    'reviews.3.text': '"Pops & Bangs exactly how I wanted, without being exaggerated. The car pulls excellently across the entire RPM range."'
   }
 };
 
@@ -218,7 +344,7 @@ function setLanguage(lang) {
       } else if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
         el.placeholder = translations[lang][key];
       } else {
-        el.textContent = translations[lang][key];
+        el.innerHTML = translations[lang][key];
       }
     }
   });

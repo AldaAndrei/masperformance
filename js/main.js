@@ -84,8 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       
       const btn = contactForm.querySelector('input[type="submit"]');
-      const originalText = btn.value;
-      btn.value = "Sending...";
+      const originalText = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['contact.form.submit']) || btn.value;
+      const sendingText = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['contact.form.sending']) || "Sending...";
+      btn.value = sendingText;
       btn.disabled = true;
 
       // Basic Validation
@@ -134,16 +135,96 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('contact_submissions', JSON.stringify(subs));
         
         contactForm.reset();
-        btn.value = "Sent Successfully!";
+        const sentText = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['contact.form.sent']) || "Sent Successfully!";
+        btn.value = sentText;
         btn.style.backgroundColor = "#4ade80";
         btn.style.color = "#000";
         
         setTimeout(() => {
-          btn.value = originalText;
+          const resetText = (typeof translations !== 'undefined' && translations[currentLang] && translations[currentLang]['contact.form.submit']) || originalText;
+          btn.value = resetText;
           btn.disabled = false;
           btn.style = "";
         }, 3000);
       }, 1500);
+    });
+  }
+
+  // Partner modal logic
+  const partnerModal = document.getElementById('partner-modal');
+  if (partnerModal) {
+    const partnerWrappers = document.querySelectorAll('.partner-img-wrapper');
+    const modalLogo = document.getElementById('modal-partner-logo');
+    const modalName = document.getElementById('modal-partner-name');
+    const modalDesc = document.getElementById('modal-partner-desc');
+    const modalClose = partnerModal.querySelector('.modal-close');
+    let currentPartnerId = null;
+
+    const updateModalContent = (partnerId) => {
+      if (!partnerId || typeof translations === 'undefined') return;
+      const nameKey = `partners.${partnerId}.name`;
+      const descKey = `partners.${partnerId}.desc`;
+      const partnerName = (translations[currentLang] && translations[currentLang][nameKey]) || '';
+      const partnerDesc = (translations[currentLang] && translations[currentLang][descKey]) || '';
+
+      if (modalName) modalName.textContent = partnerName;
+      if (modalDesc) modalDesc.innerHTML = partnerDesc;
+    };
+
+    partnerWrappers.forEach(wrapper => {
+      wrapper.addEventListener('click', () => {
+        const partnerId = wrapper.getAttribute('data-partner');
+        if (!partnerId) return;
+
+        currentPartnerId = partnerId;
+
+        // Find image inside wrapper
+        const img = wrapper.querySelector('img');
+        const imgSrc = img ? img.getAttribute('src') : '';
+        const imgAlt = img ? img.getAttribute('alt') : '';
+
+        // Set image sources
+        if (modalLogo) {
+          modalLogo.setAttribute('src', imgSrc);
+          modalLogo.setAttribute('alt', imgAlt);
+        }
+
+        // Set text based on current language
+        updateModalContent(partnerId);
+
+        // Open modal
+        partnerModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    const closeModal = () => {
+      partnerModal.classList.remove('active');
+      document.body.style.overflow = '';
+      currentPartnerId = null;
+    };
+
+    if (modalClose) {
+      modalClose.addEventListener('click', closeModal);
+    }
+
+    partnerModal.addEventListener('click', (e) => {
+      if (e.target === partnerModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && partnerModal.classList.contains('active')) {
+        closeModal();
+      }
+    });
+
+    // Update modal details dynamically if language changes while open
+    document.addEventListener('languageChanged', () => {
+      if (partnerModal.classList.contains('active') && currentPartnerId) {
+        updateModalContent(currentPartnerId);
+      }
     });
   }
 
