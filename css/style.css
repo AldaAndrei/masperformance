@@ -72,8 +72,8 @@ a:hover {
 }
 
 .logo-img {
-  height: 35px;
-  width: auto;
+  height: auto;
+  width: 220px;
   filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
   animation: logoPulse 4s infinite alternate;
 }
