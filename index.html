@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mas Performance | Chiptuning & ECU Remap</title>
+  <title>MasPerformance | Chiptuning & ECU Remap</title>
   <meta name="description" content="Professional ECU software optimization for increased performance and efficiency.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,7 +18,7 @@
 
   <!-- PHP INCLUDE START: navbar -->
   <header class="navbar">
-    <a href="index.html" class="logo"><img src="assets/images/MasPerformance.svg" alt="Mas Performance" class="logo-img"></a>
+    <a href="index.html" class="logo"><img src="assets/images/MasPerformance.svg" alt="MasPerformance" class="logo-img"></a>
     <nav class="nav-links">
       <a href="index.html" data-lang-key="nav.home">Acasă</a>
       <a href="about.html" data-lang-key="nav.about">Despre Noi</a>
@@ -38,7 +38,7 @@
     </video>
     <div class="hero-overlay"></div>
     <div class="hero-center-wrapper">
-      <img src="assets/images/MasPerformanceGIF.gif" alt="Mas Performance" class="hero-center-logo">
+      <img src="assets/images/MasPerformanceGIF.gif" alt="MasPerformance" class="hero-center-logo">
     </div>
   </section>
 
@@ -64,7 +64,7 @@
   </section>
 
   <section class="section" id="partners"
-    style="background-color: var(--surface-1); padding: 5rem 5%; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%); margin-bottom: 4rem;">
+    style="background-color: #262626; padding: 5rem 5%; clip-path: polygon(0 0, 100% 0, 100% calc(100% - 3vw), 0 100%); margin-bottom: 4rem;">
     <div class="section-header" style="text-align: center; margin-bottom: 3rem;">
       <h2 class="section-title"><span data-lang-key="partners.title.1">Parteneri</span> <span class="text-accent" data-lang-key="partners.title.2">De Încredere</span></h2>
       <p class="text-muted" data-lang-key="partners.sub">Colaborăm cu cei mai buni din industrie pentru a-ți oferi servicii de top.</p>
@@ -73,11 +73,11 @@
       <!-- ADAUGA AICI POZELE PARTENERILOR. Foloseste clasa partner-img-wrapper pentru fiecare poza -->
       <div class="partner-img-wrapper" data-partner="alientech"><img src="assets/images/AlienTech.svg" alt="AlienTech"></div>
       <div class="partner-img-wrapper" data-partner="autel"><img src="assets/images/Autel.svg" alt="Autel"></div>
-      <div class="partner-img-wrapper" data-partner="autotuner"><img src="assets/images/AutoTuner.svg" alt="AutoTuner"></div>
-      <div class="partner-img-wrapper" data-partner="launch"><img src="assets/images/LaunchWithBG.svg" alt="Launch"></div>
-      <div class="partner-img-wrapper" data-partner="magicmotorsport"><img src="assets/images/MagicMotorsport.svg" alt="MagicMotorsport"></div>
-      <div class="partner-img-wrapper" data-partner="obdstar"><img src="assets/images/OBDSTARWithBG.svg" alt="ObdStar"></div>
-      <div class="partner-img-wrapper" data-partner="winols"><img src="assets/images/WinOLSWithBG.svg" alt="WinOLS"></div>
+      <div class="partner-img-wrapper" data-partner="autotuner"><img src="assets/images/AutoTUNER.svg" alt="AutoTuner"></div>
+      <div class="partner-img-wrapper" data-partner="launch"><img src="assets/images/LAUNCH.svg" alt="Launch"></div>
+      <div class="partner-img-wrapper" data-partner="magicmotorsport"><img src="assets/images/MAGICMotorsport.svg" alt="MagicMotorsport"></div>
+      <div class="partner-img-wrapper" data-partner="obdstar"><img src="assets/images/OBDStar.svg" alt="ObdStar"></div>
+      <div class="partner-img-wrapper" data-partner="winols"><img src="assets/images/WinOLS.svg" alt="WinOLS"></div>
     </div>
   </section>
 
@@ -88,44 +88,97 @@
           data-lang-key="reviews.title.2">Clienților</span></h2>
     </div>
 
-    <div class="reviews-grid">
-      <!-- PHP INCLUDE START: review-card -->
-      <div class="review-card">
-        <div class="stars">★★★★★</div>
-        <p class="review-text" data-lang-key="reviews.1.text">"Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu
-          1L/100km la mers constant. Profesioniști adevărați."</p>
-        <div class="review-author">Andrei Popescu</div>
-        <div class="review-car">BMW F30 320d - Stage 1</div>
-      </div>
-      <div class="review-card">
-        <div class="stars">★★★★★</div>
-        <p class="review-text" data-lang-key="reviews.2.text">"Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au
-          explicat tot procesul pas cu pas."</p>
-        <div class="review-author">Mihai Ionescu</div>
-        <div class="review-car">VW Golf 7 2.0 TDI</div>
-      </div>
-      <div class="review-card">
-        <div class="stars">★★★★★</div>
-        <p class="review-text" data-lang-key="reviews.3.text">"Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată
-          plaja de turații."</p>
-        <div class="review-author">Alexandru Vasile</div>
-        <div class="review-car">Audi S3 8V - Stage 2</div>
+    <div class="reviews-wrapper">
+      <div class="reviews-track">
+        <!-- Set 1 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.1.text">"Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu
+            1L/100km la mers constant. Profesioniști adevărați."</p>
+          <div class="review-author">Andrei Popescu</div>
+          <div class="review-car">BMW F30 320d - Stage 1</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.2.text">"Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au
+            explicat tot procesul pas cu pas."</p>
+          <div class="review-author">Mihai Ionescu</div>
+          <div class="review-car">VW Golf 7 2.0 TDI</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.3.text">"Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată
+            plaja de turații."</p>
+          <div class="review-author">Alexandru Vasile</div>
+          <div class="review-car">Audi S3 8V - Stage 2</div>
+        </div>
+        
+        <!-- Set 2 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.1.text">"Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu
+            1L/100km la mers constant. Profesioniști adevărați."</p>
+          <div class="review-author">Andrei Popescu</div>
+          <div class="review-car">BMW F30 320d - Stage 1</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.2.text">"Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au
+            explicat tot procesul pas cu pas."</p>
+          <div class="review-author">Mihai Ionescu</div>
+          <div class="review-car">VW Golf 7 2.0 TDI</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.3.text">"Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată
+            plaja de turații."</p>
+          <div class="review-author">Alexandru Vasile</div>
+          <div class="review-car">Audi S3 8V - Stage 2</div>
+        </div>
+        
+        <!-- Set 3 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.1.text">"Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu
+            1L/100km la mers constant. Profesioniști adevărați."</p>
+          <div class="review-author">Andrei Popescu</div>
+          <div class="review-car">BMW F30 320d - Stage 1</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.2.text">"Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au
+            explicat tot procesul pas cu pas."</p>
+          <div class="review-author">Mihai Ionescu</div>
+          <div class="review-car">VW Golf 7 2.0 TDI</div>
+        </div>
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="review-text" data-lang-key="reviews.3.text">"Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată
+            plaja de turații."</p>
+          <div class="review-author">Alexandru Vasile</div>
+          <div class="review-car">Audi S3 8V - Stage 2</div>
+        </div>
       </div>
     </div>
   </section>
 
   <div class="partners">
     <div class="partners-track">
-      <span>Alientech</span>
-      <span>MagicMotorsport</span>
-      <span>Autotuner</span>
-      <span>BOSCH</span>
-      <span>WinOLS</span>
-      <span>Alientech</span>
-      <span>MagicMotorsport</span>
-      <span>Autotuner</span>
-      <span>BOSCH</span>
-      <span>WinOLS</span>
+      <img src="assets/images/AlienTech.svg" alt="AlienTech">
+      <img src="assets/images/Autel.svg" alt="Autel">
+      <img src="assets/images/AutoTUNER.svg" alt="AutoTuner">
+      <img src="assets/images/LAUNCH.svg" alt="Launch">
+      <img src="assets/images/MAGICMotorsport.svg" alt="MagicMotorsport">
+      <img src="assets/images/OBDStar.svg" alt="ObdStar">
+      <img src="assets/images/WinOLS.svg" alt="WinOLS">
+      <!-- Duplicat pentru scroll continuu -->
+      <img src="assets/images/AlienTech.svg" alt="AlienTech">
+      <img src="assets/images/Autel.svg" alt="Autel">
+      <img src="assets/images/AutoTUNER.svg" alt="AutoTuner">
+      <img src="assets/images/LAUNCH.svg" alt="Launch">
+      <img src="assets/images/MAGICMotorsport.svg" alt="MagicMotorsport">
+      <img src="assets/images/OBDStar.svg" alt="ObdStar">
+      <img src="assets/images/WinOLS.svg" alt="WinOLS">
     </div>
   </div>
 
@@ -138,7 +191,7 @@
   <footer class="footer">
     <div class="footer-grid">
       <div>
-        <a href="index.html" class="logo footer-logo"><img src="assets/images/MasPerformance.svg" alt="Mas Performance"
+        <a href="index.html" class="logo footer-logo"><img src="assets/images/MasPerformance.svg" alt="MasPerformance"
             class="logo-img"></a>
         <p class="text-muted" data-lang-key="footer.desc">Profesioniști în optimizarea software a ECU-ului pentru
           creșterea performanței și eficienței.</p>
@@ -147,7 +200,6 @@
         <h4 data-lang-key="footer.links">Link-uri Rapide</h4>
         <ul>
           <li><a href="about.html" data-lang-key="nav.about">Despre Noi</a></li>
-          <li><a href="tuning-database.html" data-lang-key="nav.tuning_db">Bază Date Tuning</a></li>
           <li><a href="projects.html" data-lang-key="nav.projects">Proiecte</a></li>
         </ul>
       </div>
@@ -181,7 +233,7 @@
       </div>
     </div>
     <div class="footer-bottom" data-lang-key="footer.rights">
-      © 2025 Mas Performance. Toate drepturile rezervate.
+      © 2025 MasPerformance. Toate drepturile rezervate.
     </div>
   </footer>
   <!-- Partner Modal Popup -->

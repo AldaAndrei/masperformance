@@ -1,3 +1,5 @@
+const currentYear = new Date().getFullYear();
+
 const translations = {
   ro: {
     // Navigation
@@ -28,7 +30,7 @@ const translations = {
     
     // About
     'about.title.1': 'Despre',
-    'about.title.2': 'Mas Performance',
+    'about.title.2': 'MasPerformance',
     'about.desc': 'Suntem o echipă de ingineri pasionați de performanță, cu experiență vastă în optimizarea software-ului auto. Folosim doar echipamente originale și licențiate pentru a garanta siguranța.',
     'about.bullet.1': 'Echipamente Master licențiate',
     'about.bullet.2': 'Software dezvoltat in-house pe Dyno',
@@ -63,7 +65,7 @@ const translations = {
     'footer.links': 'Link-uri Rapide',
     'footer.services': 'Serviciile Noastre',
     'footer.contact': 'Contact',
-    'footer.rights': '© 2025 Mas Performance. Toate drepturile rezervate.',
+    'footer.rights': `© ${currentYear} MasPerformance. Toate drepturile rezervate.`,
     
     // Contact Page
     'contact.page.title.1': 'Contactează',
@@ -187,7 +189,7 @@ const translations = {
     
     // About
     'about.title.1': 'About',
-    'about.title.2': 'Mas Performance',
+    'about.title.2': 'MasPerformance',
     'about.desc': 'We are a team of performance engineers with vast experience in automotive software optimization. We only use original, licensed equipment to ensure maximum safety.',
     'about.bullet.1': 'Licensed Master equipment',
     'about.bullet.2': 'In-house Dyno developed software',
@@ -222,7 +224,7 @@ const translations = {
     'footer.links': 'Quick Links',
     'footer.services': 'Our Services',
     'footer.contact': 'Contact',
-    'footer.rights': '© 2025 Mas Performance. All rights reserved.',
+    'footer.rights': `© ${currentYear} MasPerformance. All rights reserved.`,
     
     // Contact Page
     'contact.page.title.1': 'Contact',

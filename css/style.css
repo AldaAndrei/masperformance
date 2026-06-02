@@ -136,14 +136,22 @@ header.navbar {
 
 .nav-links {
   display: flex;
-  gap: 2rem;
+  gap: 4rem;
 }
 
 .nav-links a {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 1.3rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent-color);
 }
 
 .lang-switch {
@@ -200,8 +208,16 @@ header.navbar {
   width: 90%;
   max-width: 600px;
   height: auto;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.4));
-  animation: logoPulse 4s infinite alternate;
+  animation: logoPulseNoGlow 4s infinite alternate;
+}
+
+@keyframes logoPulseNoGlow {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.02);
+  }
 }
 
 @keyframes logoPulse {
@@ -330,7 +346,8 @@ header.navbar {
 .about-img img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 3rem;
 }
 
 .about-img::after {
@@ -448,23 +465,53 @@ select:focus {
 }
 
 /* Reviews */
-.reviews-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0;
-  border: 1px solid var(--border-color);
+.reviews-wrapper {
+  width: 100%;
+  overflow: hidden;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.reviews-wrapper::before,
+.reviews-wrapper::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 15%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.reviews-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg-color), transparent);
+}
+
+.reviews-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg-color), transparent);
+}
+
+.reviews-track {
+  display: flex;
+  gap: 2rem;
+  width: max-content;
+  animation: scrollLeft 40s linear infinite;
+}
+
+.reviews-track:hover {
+  animation-play-state: paused;
 }
 
 /* PHP INCLUDE START: review-card */
 .review-card {
+  width: 350px;
+  flex-shrink: 0;
   padding: 3rem;
-  border-right: 1px solid var(--border-color);
-  border-bottom: 1px solid var(--border-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
   background: radial-gradient(circle at top left, var(--surface-2) 0%, var(--surface-1) 100%);
-}
-
-.review-card:nth-child(3n) {
-  border-right: none;
 }
 
 .stars {
@@ -499,18 +546,23 @@ select:focus {
 }
 
 .partners-track {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  width: max-content;
   animation: scrollLeft 30s linear infinite;
 }
 
-.partners-track span {
-  font-family: var(--font-heading);
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--surface-2);
-  margin: 0 3rem;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+.partners-track img {
+  height: 50px;
+  width: auto;
+  margin: 0 4rem;
+  filter: brightness(0) invert(1);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.partners-track img:hover {
+  opacity: 1;
 }
 
 @keyframes scrollLeft {
@@ -782,8 +834,9 @@ textarea.form-control {
 
 /* Partners Gallery */
 .partners-gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2rem;
   width: 100%;
   max-width: 1300px;
@@ -792,12 +845,14 @@ textarea.form-control {
 }
 
 .partner-img-wrapper {
-  background: var(--surface-2);
-  padding: 2.5rem;
+  flex: 1 1 250px;
+  max-width: 300px;
+  background: transparent;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 160px;
+  min-height: 200px;
   clip-path: polygon(15px 0, 100% 0, calc(100% - 15px) 100%, 0 100%);
   transition: var(--transition);
   border: 1px solid transparent;
@@ -812,15 +867,20 @@ textarea.form-control {
 }
 
 .partner-img-wrapper img {
+  background-color: transparent;
+  padding: 10px;
+  border-radius: 15px;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.3));
+  transition: all 0.3s ease;
   max-width: 100%;
-  max-height: 110px;
+  max-height: 180px;
+  width: auto;
   object-fit: contain;
-  filter: grayscale(100%) opacity(0.5);
-  transition: var(--transition);
 }
 
 .partner-img-wrapper:hover img {
-  filter: grayscale(0%) opacity(1);
+  background-color: rgba(255, 255, 255, 0.35);
+  animation: logoPulse 2s infinite alternate;
 }
 
 /* Modal Popup Styles */
