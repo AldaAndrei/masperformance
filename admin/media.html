@@ -18,6 +18,7 @@
       <a href="submissions.html">Submissions</a>
       <a href="reviews.html">Reviews</a>
       <a href="media.html" class="active">Media</a>
+      <a href="projects.html">Projects</a>
       <a href="settings.html">Settings</a>
     </nav>
     <div class="admin-logout">
@@ -33,35 +34,26 @@
     <div class="admin-content">
       
       <!-- PHP CONVERSION NOTE: Handle $_FILES upload here -->
-      <div class="drop-zone" onclick="alert('Open file picker')">
+      <div class="drop-zone" id="media-drop-zone">
         <h3 style="font-family: var(--font-heading); margin-bottom: 0.5rem; color: var(--text-primary);">Drag & Drop images here</h3>
         <p>or click to browse</p>
+        <input type="file" id="media-file-input" accept="image/*" multiple style="display: none;">
+      </div>
+
+      <!-- URL Paste Form -->
+      <div class="url-upload-form">
+        <h3>Adaugă din URL:</h3>
+        <form id="url-upload-form">
+          <input type="url" id="url-upload-input" placeholder="Introduceți linkul imaginii (ex: https://site.com/poza.jpg)" required>
+          <button type="submit" class="btn btn-primary btn-small" style="padding: 0.5rem 1.5rem; clip-path: none;">Adaugă</button>
+        </form>
       </div>
 
       <div class="admin-card" style="padding: 2rem;">
         <h2 style="font-family: var(--font-heading); font-size:1.2rem; margin-bottom: 1.5rem;">Uploaded Files</h2>
         
-        <div class="media-grid">
-          <div class="media-item">
-            <img src="https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=200&auto=format&fit=crop" alt="Media">
-            <button class="delete-btn" onclick="alert('Delete image?')">×</button>
-          </div>
-          <div class="media-item">
-            <img src="https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=200&auto=format&fit=crop" alt="Media">
-            <button class="delete-btn" onclick="alert('Delete image?')">×</button>
-          </div>
-          <div class="media-item">
-            <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=200&auto=format&fit=crop" alt="Media">
-            <button class="delete-btn" onclick="alert('Delete image?')">×</button>
-          </div>
-          <div class="media-item">
-            <img src="https://images.unsplash.com/photo-1600705722908-bab1e61c0b4d?q=80&w=200&auto=format&fit=crop" alt="Media">
-            <button class="delete-btn" onclick="alert('Delete image?')">×</button>
-          </div>
-          <div class="media-item">
-            <img src="https://images.unsplash.com/photo-1611016186353-9af58c69a533?q=80&w=200&auto=format&fit=crop" alt="Media">
-            <button class="delete-btn" onclick="alert('Delete image?')">×</button>
-          </div>
+        <div class="media-grid" id="admin-media-grid">
+          <!-- Dynamically populated via JS -->
         </div>
 
       </div>

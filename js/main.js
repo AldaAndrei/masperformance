@@ -8,6 +8,15 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.style.setProperty('--logo-glow', `0 0 14px ${siteSettings.accentColor}CC, 0 0 36px ${siteSettings.accentColor}59`);
   }
 
+  // Load dynamic image assignments from admin
+  const imageSlots = JSON.parse(localStorage.getItem('mas_image_slots') || '{}');
+  document.querySelectorAll('img[data-img-slot]').forEach(img => {
+    const slot = img.getAttribute('data-img-slot');
+    if (imageSlots[slot]) {
+      img.setAttribute('src', imageSlots[slot]);
+    }
+  });
+
   // Intersection Observer for scroll animations (Stats)
   const statsNum = document.querySelectorAll('.stat-num');
   
@@ -226,6 +235,88 @@ document.addEventListener('DOMContentLoaded', () => {
         updateModalContent(currentPartnerId);
       }
     });
+  }
+
+  // Dynamic Projects Grid Renderer
+  const projectsGrid = document.getElementById('projects-grid');
+  if (projectsGrid) {
+    const defaultProjects = [
+      {
+        id: 1,
+        title: "BMW M4 (F82)",
+        desc_ro: "Stage 2 + Custom Pops & Bangs",
+        desc_en: "Stage 2 + Custom Pops & Bangs",
+        stock: "431 HP / 550 Nm",
+        tuned: "540 HP / 750 Nm",
+        image: "https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: 2,
+        title: "VW Golf 7 GTI",
+        desc_ro: "Stage 1 + DSG Tune",
+        desc_en: "Stage 1 + DSG Tune",
+        stock: "220 HP / 350 Nm",
+        tuned: "300 HP / 450 Nm",
+        image: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=800&auto=format&fit=crop"
+      },
+      {
+        id: 3,
+        title: "Audi A6 3.0 TDI",
+        desc_ro: "Stage 1 + EGR/DPF Off (Motorsport)",
+        desc_en: "Stage 1 + EGR/DPF Off (Motorsport)",
+        stock: "245 HP / 500 Nm",
+        tuned: "300 HP / 600 Nm",
+        image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=800&auto=format&fit=crop"
+      }
+    ];
+
+    const renderProjects = () => {
+      projectsGrid.innerHTML = '';
+      const projects = JSON.parse(localStorage.getItem('mas_projects'));
+      
+      // Fallback/Init if not set
+      let list = projects;
+      if (!list || !Array.isArray(list)) {
+        list = defaultProjects;
+        localStorage.setItem('mas_projects', JSON.stringify(list));
+      }
+
+      list.forEach(p => {
+        const desc = currentLang === 'ro' ? p.desc_ro : p.desc_en;
+        const stockLabel = currentLang === 'ro' ? 'Stock' : 'Stock';
+        const tunedLabel = currentLang === 'ro' ? 'Optimizat' : 'Tuned';
+        
+        const card = document.createElement('div');
+        card.style.cssText = "background: var(--surface-1); border: 1px solid var(--border-color); display: flex; flex-direction: column;";
+
+        card.innerHTML = `
+          <img src="${p.image}" alt="${p.title}" style="width: 100%; height: 250px; object-fit: cover; filter: grayscale(100%); transition: all 0.3s;" onmouseover="this.style.filter='grayscale(0%)'" onmouseout="this.style.filter='grayscale(100%)'">
+          <div style="padding: 2rem; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between;">
+            <div>
+              <h3 style="font-family: var(--font-heading); margin-bottom: 0.5rem; font-size: 1.5rem;">${p.title}</h3>
+              <p class="text-muted" style="margin-bottom: 1.5rem;">${desc}</p>
+            </div>
+            <div style="display: flex; gap: 1rem; border-top: 1px solid var(--border-color); padding-top: 1rem;">
+              <div>
+                <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--text-muted);">${stockLabel}</span><br>
+                <strong>${p.stock}</strong>
+              </div>
+              <div>
+                <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--accent-color);">${tunedLabel}</span><br>
+                <strong>${p.tuned}</strong>
+              </div>
+            </div>
+          </div>
+        `;
+        projectsGrid.appendChild(card);
+      });
+    };
+
+    // Initial render
+    renderProjects();
+
+    // Re-render when language changes
+    document.addEventListener('languageChanged', renderProjects);
   }
 
 });
