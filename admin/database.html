@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Database Backup | Mas Performance Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/admin.css">
+</head>
+<body>
+
+  <!-- PHP INCLUDE: admin_sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo"><img src="../assets/images/MasPerformance.svg" alt="Mas Performance" style="height: 35px; width: auto; filter: drop-shadow(0 0 10px rgba(208, 2, 27, 0.5));"></div>
+    <nav class="admin-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="submissions.html">Submissions</a>
+      <a href="reviews.html">Reviews</a>
+      <a href="projects.html">Projects</a>
+      <a href="database.html" class="active">Database</a>
+      <a href="settings.html">Settings</a>
+    </nav>
+    <div class="admin-logout">
+      <a href="#" id="logout-btn" style="color:var(--text-muted); font-size:0.9rem;">Logout</a>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <header class="admin-header">
+      <h1 style="font-family: var(--font-heading); font-size:1.5rem;">Database Backup</h1>
+      <button class="btn btn-primary" id="btn-download-sql" style="clip-path: none;">Download SQL Backup 💾</button>
+    </header>
+
+    <div class="admin-content">
+      
+      <div class="dashboard-stats" style="grid-template-columns: repeat(4, 1fr); margin-bottom: 2rem;">
+        <div class="admin-stat-card">
+          <h3>Settings Keys</h3>
+          <div class="num text-accent" id="db-stat-settings">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <h3>Submissions</h3>
+          <div class="num text-accent" id="db-stat-submissions">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <h3>Reviews</h3>
+          <div class="num" id="db-stat-reviews">0</div>
+        </div>
+        <div class="admin-stat-card">
+          <h3>Projects</h3>
+          <div class="num" id="db-stat-projects">0</div>
+        </div>
+      </div>
+
+      <div class="admin-card" style="padding: 2.5rem; margin-bottom: 2rem;">
+        <h2 style="font-family: var(--font-heading); font-size:1.3rem; margin-bottom: 1rem; color: var(--text-primary);">Export Database to SQL</h2>
+        <p class="text-muted" style="line-height: 1.6; margin-bottom: 1.5rem;">
+          Această secțiune vă permite să generați și să descărcați o copie completă de siguranță a bazei de date a site-ului Mas Performance în format SQL. 
+          Fișierul generat conține structurile tabelelor (<code>CREATE TABLE</code>) și toate înregistrările curente stocate local (<code>INSERT INTO</code>) pentru setările site-ului, proiectele active, testimoniale și formularele de contact depuse.
+        </p>
+        <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); padding: 1.5rem; border-radius: 4px; font-family: monospace; font-size: 0.85rem; color: var(--text-muted); overflow-x: auto; white-space: pre;">-- Exemplu structură export SQL:
+CREATE TABLE `site_settings` (
+  `key` varchar(100) NOT NULL,
+  `value` text,
+  PRIMARY KEY (`key`)
+);
+
+CREATE TABLE `projects` (
+  `id` bigint(20) NOT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `desc_ro` text,
+  `desc_en` text,
+  `stock` varchar(100) DEFAULT NULL,
+  `tuned` varchar(100) DEFAULT NULL,
+  `image` text,
+  PRIMARY KEY (`id`)
+);</div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="../js/admin.js"></script>
+</body>
+</html>

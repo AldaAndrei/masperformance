@@ -1,4 +1,59 @@
 // Main JS
+
+// Override hardcoded translations with settings from localStorage before DOMContentLoaded
+(function() {
+  const siteSettings = JSON.parse(localStorage.getItem('mas_settings') || '{}');
+  if (typeof translations !== 'undefined') {
+    // Override Address
+    if (siteSettings.contactAddress) {
+      translations.ro['contact.info.address.val'] = siteSettings.contactAddress;
+      translations.en['contact.info.address.val'] = siteSettings.contactAddress;
+    }
+    
+    // Override Headline RO
+    if (siteSettings.heroHeadlineRo) {
+      const parts = siteSettings.heroHeadlineRo.split('\\n');
+      if (parts.length >= 2) {
+        translations.ro['hero.title.1'] = parts[0];
+        translations.ro['hero.title.2'] = parts[1];
+      } else {
+        translations.ro['hero.title.1'] = siteSettings.heroHeadlineRo;
+        translations.ro['hero.title.2'] = '';
+      }
+    }
+
+    // Override Headline EN
+    if (siteSettings.heroHeadlineEn) {
+      const parts = siteSettings.heroHeadlineEn.split('\\n');
+      if (parts.length >= 2) {
+        translations.en['hero.title.1'] = parts[0];
+        translations.en['hero.title.2'] = parts[1];
+      } else {
+        translations.en['hero.title.1'] = siteSettings.heroHeadlineEn;
+        translations.en['hero.title.2'] = '';
+      }
+    }
+
+    // Override Despre Noi (About Us)
+    if (siteSettings.aboutDescRo) {
+      translations.ro['about.desc'] = siteSettings.aboutDescRo;
+    }
+    if (siteSettings.aboutDescEn) {
+      translations.en['about.desc'] = siteSettings.aboutDescEn;
+    }
+    if (siteSettings.aboutFullRo) {
+      translations.ro['about.p1'] = siteSettings.aboutFullRo;
+    }
+    if (siteSettings.aboutFullEn) {
+      translations.en['about.p1'] = siteSettings.aboutFullEn;
+    }
+
+    // Clear footer description translations
+    translations.ro['footer.desc'] = '';
+    translations.en['footer.desc'] = '';
+  }
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
 
   // Load color theme if customized in admin
@@ -8,8 +63,81 @@ document.addEventListener('DOMContentLoaded', () => {
     document.documentElement.style.setProperty('--logo-glow', `0 0 14px ${siteSettings.accentColor}CC, 0 0 36px ${siteSettings.accentColor}59`);
   }
 
+  // Load dynamic video path if customized in admin
+  const heroVideo = document.querySelector('.hero-video');
+  if (heroVideo && siteSettings.heroVideo) {
+    const source = heroVideo.querySelector('source');
+    if (source) {
+      source.setAttribute('src', siteSettings.heroVideo);
+      heroVideo.load();
+    }
+  }
+
+  // Load social links from admin settings
+  const socialLinks = {
+    Facebook: siteSettings.hasOwnProperty('socialFacebook') ? siteSettings.socialFacebook : 'https://facebook.com',
+    Instagram: siteSettings.hasOwnProperty('socialInstagram') ? siteSettings.socialInstagram : 'https://www.instagram.com/mas_performance25?igsh=ODg5ZWJieTUybDVq',
+    YouTube: siteSettings.hasOwnProperty('socialYoutube') ? siteSettings.socialYoutube : '',
+    TikTok: siteSettings.hasOwnProperty('socialTiktok') ? siteSettings.socialTiktok : ''
+  };
+
+  Object.keys(socialLinks).forEach(platform => {
+    const url = socialLinks[platform];
+    document.querySelectorAll(`.social-links a[aria-label="${platform}"]`).forEach(a => {
+      if (url) {
+        a.setAttribute('href', url);
+        a.setAttribute('target', '_blank');
+        a.setAttribute('rel', 'noopener noreferrer');
+        a.style.display = '';
+      } else {
+        if (platform === 'Facebook' || platform === 'Instagram') {
+          const fallback = platform === 'Facebook' ? 'https://facebook.com' : 'https://www.instagram.com/mas_performance25?igsh=ODg5ZWJieTUybDVq';
+          a.setAttribute('href', fallback);
+          a.setAttribute('target', '_blank');
+          a.setAttribute('rel', 'noopener noreferrer');
+          a.style.display = '';
+        } else {
+          a.style.display = 'none';
+        }
+      }
+    });
+  });
+
+  // Load contact info from admin settings
+  const contactPhone = siteSettings.contactPhone || '0730348009';
+  const contactEmail = siteSettings.contactEmail || 'contact@masperformance.ro';
+  const contactAddress = siteSettings.contactAddress || 'Bulevardul Iuliu Maniu nr. 1, Sector 6, București';
+
+  // Update phone links and text
+  document.querySelectorAll('a[href^="tel:"]').forEach(a => {
+    const cleanPhone = contactPhone.replace(/\s+/g, '');
+    a.setAttribute('href', `tel:${cleanPhone}`);
+    a.textContent = contactPhone;
+  });
+  document.querySelectorAll('.contact-phone').forEach(el => {
+    el.textContent = contactPhone;
+  });
+
+  // Update email links and text
+  document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
+    a.setAttribute('href', `mailto:${contactEmail}`);
+    a.textContent = contactEmail;
+  });
+  document.querySelectorAll('.contact-email').forEach(el => {
+    el.textContent = contactEmail;
+  });
+
+  // Update address text
+  document.querySelectorAll('.contact-address').forEach(el => {
+    el.textContent = contactAddress;
+  });
+
   // Load dynamic image assignments from admin
-  const imageSlots = JSON.parse(localStorage.getItem('mas_image_slots') || '{}');
+  let imageSlots = JSON.parse(localStorage.getItem('mas_image_slots') || '{}');
+  if (imageSlots['home_about'] && imageSlots['home_about'].includes('photo-1600705722908-bab1e61c0b4d')) {
+    imageSlots['home_about'] = 'assets/images/IMG_2523.jpg';
+    localStorage.setItem('mas_image_slots', JSON.stringify(imageSlots));
+  }
   document.querySelectorAll('img[data-img-slot]').forEach(img => {
     const slot = img.getAttribute('data-img-slot');
     if (imageSlots[slot]) {
@@ -317,6 +445,83 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Re-render when language changes
     document.addEventListener('languageChanged', renderProjects);
+  }
+
+  // Dynamic Reviews Renderer
+  const reviewsTrack = document.querySelector('.reviews-track');
+  if (reviewsTrack) {
+    const defaultReviews = [
+      {
+        id: 1,
+        customer_name: "Andrei Popescu",
+        car: "BMW F30 320d - Stage 1",
+        rating: 5,
+        review_text: {
+          ro: "Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu 1L/100km la mers constant. Profesioniști adevărați.",
+          en: "The car feels completely different. Power delivery is linear, and fuel consumption dropped by 1L/100km at constant speed. Real professionals."
+        },
+        approved: 1
+      },
+      {
+        id: 2,
+        customer_name: "Mihai Ionescu",
+        car: "VW Golf 7 2.0 TDI",
+        rating: 5,
+        review_text: {
+          ro: "Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au explicat tot procesul pas cu pas.",
+          en: "I came for an EGR Off and left with Stage 1. Highly recommend, they explained the whole process step by step."
+        },
+        approved: 1
+      },
+      {
+        id: 3,
+        customer_name: "Alexandru Vasile",
+        car: "Audi S3 8V - Stage 2",
+        rating: 5,
+        review_text: {
+          ro: "Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată plaja de turații.",
+          en: "Pops & Bangs exactly how I wanted, without being exaggerated. The car pulls excellently across the entire RPM range."
+        },
+        approved: 1
+      }
+    ];
+
+    const renderHomeReviews = () => {
+      reviewsTrack.innerHTML = '';
+      let list = JSON.parse(localStorage.getItem('mas_reviews'));
+      if (!list || !Array.isArray(list)) {
+        list = defaultReviews;
+        localStorage.setItem('mas_reviews', JSON.stringify(list));
+      }
+
+      const approvedList = list.filter(r => r.approved);
+      if (approvedList.length === 0) return;
+
+      // Duplicate the list 3 times for continuous looping scroll effect
+      const loopList = [...approvedList, ...approvedList, ...approvedList];
+
+      loopList.forEach(r => {
+        let text = r.review_text;
+        // Handle bilingual text for default reviews, or string for user reviews
+        if (typeof text === 'object' && text !== null) {
+          text = currentLang === 'en' ? (text.en || text.ro) : (text.ro || text.en);
+        }
+
+        const starsStr = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        const card = document.createElement('div');
+        card.className = 'review-card';
+        card.innerHTML = `
+          <div class="stars">${starsStr}</div>
+          <p class="review-text">"${text}"</p>
+          <div class="review-author">${r.customer_name}</div>
+          <div class="review-car">${r.car}</div>
+        `;
+        reviewsTrack.appendChild(card);
+      });
+    };
+
+    renderHomeReviews();
+    document.addEventListener('languageChanged', renderHomeReviews);
   }
 
 });

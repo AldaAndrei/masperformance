@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Dashboard Stats
-  const page = window.location.pathname.split('/').pop();
+  const page = window.location.pathname.split('/').pop().toLowerCase().replace('.html', '');
   
-  if (page === 'dashboard.html') {
+  if (page === 'dashboard') {
     const subs = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
     const reviews = JSON.parse(localStorage.getItem('mas_reviews') || '[]');
     const unread = subs.filter(s => !s.is_read).length;
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Settings
-  if (page === 'settings.html') {
+  if (page === 'settings') {
     const settings = JSON.parse(localStorage.getItem('mas_settings') || '{}');
     const colorPicker = document.getElementById('custom-color');
     const presets = document.querySelectorAll('.color-btn');
@@ -94,42 +94,98 @@ document.addEventListener('DOMContentLoaded', () => {
       colorPicker.value = settings.accentColor;
     }
 
-    // Colors
-    presets.forEach(btn => {
-      btn.addEventListener('click', () => {
-        const c = btn.getAttribute('data-color');
+    const sections = document.querySelectorAll('.settings-section');
+    if (sections.length >= 5) {
+      const heroSection = sections[1];
+      const aboutSection = sections[2];
+      const contactSection = sections[3];
+      const socialSection = sections[4];
+
+      const heroVideoInput = heroSection.querySelector('input');
+      const heroHeadlineRoInput = heroSection.querySelectorAll('textarea')[0];
+      const heroHeadlineEnInput = heroSection.querySelectorAll('textarea')[1];
+
+      // About fields (using IDs for reliability)
+      const aboutDescRoInput = document.getElementById('about-desc-ro');
+      const aboutDescEnInput = document.getElementById('about-desc-en');
+      const aboutFullRoInput = document.getElementById('about-full-ro');
+      const aboutFullEnInput = document.getElementById('about-full-en');
+
+      const contactPhoneInput = contactSection.querySelectorAll('input')[0];
+      const contactWhatsappInput = contactSection.querySelectorAll('input')[1];
+      const contactEmailInput = contactSection.querySelectorAll('input')[2];
+      const contactAddressInput = contactSection.querySelector('textarea');
+
+      const socialFacebookInput = socialSection.querySelectorAll('input')[0];
+      const socialInstagramInput = socialSection.querySelectorAll('input')[1];
+      const socialYoutubeInput = socialSection.querySelectorAll('input')[2];
+      const socialTiktokInput = socialSection.querySelectorAll('input')[3];
+
+      // Load saved values if they exist
+      if (settings.heroVideo && heroVideoInput) heroVideoInput.value = settings.heroVideo;
+      if (settings.heroHeadlineRo && heroHeadlineRoInput) heroHeadlineRoInput.value = settings.heroHeadlineRo;
+      if (settings.heroHeadlineEn && heroHeadlineEnInput) heroHeadlineEnInput.value = settings.heroHeadlineEn;
+      if (settings.aboutDescRo && aboutDescRoInput) aboutDescRoInput.value = settings.aboutDescRo;
+      if (settings.aboutDescEn && aboutDescEnInput) aboutDescEnInput.value = settings.aboutDescEn;
+      if (settings.aboutFullRo && aboutFullRoInput) aboutFullRoInput.value = settings.aboutFullRo;
+      if (settings.aboutFullEn && aboutFullEnInput) aboutFullEnInput.value = settings.aboutFullEn;
+      if (settings.contactPhone && contactPhoneInput) contactPhoneInput.value = settings.contactPhone;
+      if (settings.contactWhatsapp && contactWhatsappInput) contactWhatsappInput.value = settings.contactWhatsapp;
+      if (settings.contactEmail && contactEmailInput) contactEmailInput.value = settings.contactEmail;
+      if (settings.contactAddress && contactAddressInput) contactAddressInput.value = settings.contactAddress;
+      if (settings.socialFacebook && socialFacebookInput) socialFacebookInput.value = settings.socialFacebook;
+      if (settings.socialInstagram && socialInstagramInput) socialInstagramInput.value = settings.socialInstagram;
+      if (settings.socialYoutube && socialYoutubeInput) socialYoutubeInput.value = settings.socialYoutube;
+      if (settings.socialTiktok && socialTiktokInput) socialTiktokInput.value = settings.socialTiktok;
+
+      // Colors
+      presets.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const c = btn.getAttribute('data-color');
+          document.documentElement.style.setProperty('--accent-color', c);
+          settings.accentColor = c;
+          colorPicker.value = c;
+          localStorage.setItem('mas_settings', JSON.stringify(settings));
+        });
+      });
+
+      colorPicker.addEventListener('change', (e) => {
+        const c = e.target.value;
         document.documentElement.style.setProperty('--accent-color', c);
         settings.accentColor = c;
-        colorPicker.value = c;
         localStorage.setItem('mas_settings', JSON.stringify(settings));
       });
-    });
 
-    colorPicker.addEventListener('change', (e) => {
-      const c = e.target.value;
-      document.documentElement.style.setProperty('--accent-color', c);
-      settings.accentColor = c;
-      localStorage.setItem('mas_settings', JSON.stringify(settings));
-    });
-    
-    /* PHP CONVERSION NOTE:
-      $stmt = $pdo->prepare("UPDATE site_settings SET value = ? WHERE key = ?");
-      foreach($_POST as $key => $value) {
-         $stmt->execute([$value, $key]);
+      const saveBtn = document.getElementById('save-settings');
+      if(saveBtn) {
+        saveBtn.addEventListener('click', () => {
+          if (heroVideoInput) settings.heroVideo = heroVideoInput.value;
+          if (heroHeadlineRoInput) settings.heroHeadlineRo = heroHeadlineRoInput.value;
+          if (heroHeadlineEnInput) settings.heroHeadlineEn = heroHeadlineEnInput.value;
+          if (aboutDescRoInput) settings.aboutDescRo = aboutDescRoInput.value;
+          if (aboutDescEnInput) settings.aboutDescEn = aboutDescEnInput.value;
+          if (aboutFullRoInput) settings.aboutFullRo = aboutFullRoInput.value;
+          if (aboutFullEnInput) settings.aboutFullEn = aboutFullEnInput.value;
+          if (contactPhoneInput) settings.contactPhone = contactPhoneInput.value;
+          if (contactWhatsappInput) settings.contactWhatsapp = contactWhatsappInput.value;
+          if (contactEmailInput) settings.contactEmail = contactEmailInput.value;
+          if (contactAddressInput) settings.contactAddress = contactAddressInput.value;
+          if (socialFacebookInput) settings.socialFacebook = socialFacebookInput.value;
+          if (socialInstagramInput) settings.socialInstagram = socialInstagramInput.value;
+          if (socialYoutubeInput) settings.socialYoutube = socialYoutubeInput.value;
+          if (socialTiktokInput) settings.socialTiktok = socialTiktokInput.value;
+
+          localStorage.setItem('mas_settings', JSON.stringify(settings));
+          alert('Setările au fost salvate cu succes!');
+        });
       }
-    */
-    const saveBtn = document.getElementById('save-settings');
-    if(saveBtn) {
-      saveBtn.addEventListener('click', () => {
-        alert('Settings saved to localStorage (Prototype)');
-      });
     }
   }
 
 
 
   // Submissions
-  if (page === 'submissions.html') {
+  if (page === 'submissions') {
     const subs = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
     const tbody = document.getElementById('subs-tbody');
     
@@ -158,28 +214,231 @@ document.addEventListener('DOMContentLoaded', () => {
       if(!sub) return;
       sub.is_read = 1;
       localStorage.setItem('contact_submissions', JSON.stringify(subs));
-      alert(`Message from ${sub.full_name}:\n\n${sub.message}\n\nFuel: ${sub.fuel}\nMileage: ${sub.mileage}\nContact via: ${sub.contact_method} (${sub.contact_time})`);
+      
+      const contentEl = document.getElementById('sub-details-content');
+      if (contentEl) {
+        contentEl.innerHTML = `
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <div>
+              <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Client</strong>
+              <div style="font-weight: 600; font-size: 1.1rem; margin-top: 0.25rem;">${sub.full_name}</div>
+            </div>
+            <div>
+              <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Date</strong>
+              <div style="margin-top: 0.25rem;">${new Date(sub.submitted_at).toLocaleString('ro-RO')}</div>
+            </div>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <div>
+              <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Phone</strong>
+              <div style="margin-top: 0.25rem;"><a href="tel:${sub.phone.replace(/\s+/g, '')}" style="color: var(--accent-color); text-decoration: none;">${sub.phone}</a></div>
+            </div>
+            <div>
+              <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Email</strong>
+              <div style="margin-top: 0.25rem;"><a href="mailto:${sub.email}" style="color: var(--accent-color); text-decoration: none;">${sub.email}</a></div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+            <div>
+              <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Car Info</strong>
+              <div style="margin-top: 0.25rem;"><strong>${sub.car_brand} ${sub.car_model}</strong> (${sub.year})</div>
+              <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem;">Engine: ${sub.engine} | Fuel: ${sub.fuel} | Mileage: ${sub.mileage ? sub.mileage + ' km' : '-'}</div>
+            </div>
+            <div>
+              <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Contact Preference</strong>
+              <div style="margin-top: 0.25rem;">Via <strong>${sub.contact_method}</strong></div>
+              <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem;">Preferred time: ${sub.contact_time}</div>
+            </div>
+          </div>
+          
+          <div>
+            <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Message / Details</strong>
+            <div style="background: rgba(255,255,255,0.05); padding: 1rem; border-radius: 4px; margin-top: 0.5rem; white-space: pre-wrap; border-left: 3px solid var(--accent-color);">${sub.message || 'No additional message provided.'}</div>
+          </div>
+        `;
+        openModal('sub-modal');
+      }
       renderSubs();
     }
   }
 
+  // Review Management System
+  if (page === 'reviews') {
+    const defaultReviews = [
+      {
+        id: 1,
+        customer_name: "Andrei Popescu",
+        car: "BMW F30 320d - Stage 1",
+        rating: 5,
+        review_text: {
+          ro: "Mașina se simte total diferit. Livrarea puterii este liniară, iar consumul a scăzut cu 1L/100km la mers constant. Profesioniști adevărați.",
+          en: "The car feels completely different. Power delivery is linear, and fuel consumption dropped by 1L/100km at constant speed. Real professionals."
+        },
+        approved: 1
+      },
+      {
+        id: 2,
+        customer_name: "Mihai Ionescu",
+        car: "VW Golf 7 2.0 TDI",
+        rating: 5,
+        review_text: {
+          ro: "Am venit pentru un EGR Off și am plecat cu Stage 1. Recomand cu încredere, mi-au explicat tot procesul pas cu pas.",
+          en: "I came for an EGR Off and left with Stage 1. Highly recommend, they explained the whole process step by step."
+        },
+        approved: 1
+      },
+      {
+        id: 3,
+        customer_name: "Alexandru Vasile",
+        car: "Audi S3 8V - Stage 2",
+        rating: 5,
+        review_text: {
+          ro: "Pops & Bangs exact cum mi-am dorit, fără să fie exagerat. Mașina trage excelent pe toată plaja de turații.",
+          en: "Pops & Bangs exactly how I wanted, without being exaggerated. The car pulls excellently across the entire RPM range."
+        },
+        approved: 1
+      }
+    ];
+
+    let reviewsList = JSON.parse(localStorage.getItem('mas_reviews'));
+    if (!reviewsList || !Array.isArray(reviewsList)) {
+      reviewsList = defaultReviews;
+      localStorage.setItem('mas_reviews', JSON.stringify(reviewsList));
+    }
+
+    const tbody = document.getElementById('reviews-tbody');
+    const modal = document.getElementById('review-modal');
+    const form = document.getElementById('review-form');
+    const addBtn = document.getElementById('add-review-btn');
+
+    const inputId = document.getElementById('review-id');
+    const inputCustomer = document.getElementById('review-customer');
+    const inputCar = document.getElementById('review-car');
+    const inputRating = document.getElementById('review-rating');
+    const inputStatus = document.getElementById('review-status');
+    const inputText = document.getElementById('review-text');
+
+    const renderReviews = () => {
+      tbody.innerHTML = '';
+      reviewsList = JSON.parse(localStorage.getItem('mas_reviews')) || [];
+
+      reviewsList.forEach(r => {
+        const tr = document.createElement('tr');
+        const starsStr = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+        
+        let text = r.review_text;
+        if (typeof text === 'object' && text !== null) {
+          text = text.ro || text.en || '';
+        }
+
+        const toggleText = r.approved ? 'Hide' : 'Show';
+        tr.innerHTML = `
+          <td><strong>${r.customer_name}</strong></td>
+          <td>${r.car}</td>
+          <td style="color:var(--accent-color)">${starsStr}</td>
+          <td><span class="badge ${r.approved ? 'badge-success' : 'badge-warning'}">${r.approved ? 'Visible' : 'Hidden'}</span></td>
+          <td>
+            <div class="action-btns">
+              <button class="btn btn-outline btn-small" onclick="toggleReviewVisibility(${r.id})">${toggleText}</button>
+              <button class="btn btn-primary btn-small" onclick="deleteReview(${r.id})">Del</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    };
+
+    addBtn.addEventListener('click', () => {
+      document.getElementById('review-modal-title').textContent = 'Add New Review';
+      inputId.value = '';
+      form.reset();
+      openModal('review-modal');
+    });
+
+    window.toggleReviewVisibility = function(id) {
+      const r = reviewsList.find(rev => rev.id === id);
+      if (!r) return;
+      r.approved = r.approved ? 0 : 1;
+      localStorage.setItem('mas_reviews', JSON.stringify(reviewsList));
+      renderReviews();
+    };
+
+    window.deleteReview = function(id) {
+      if (confirm('Sigur doriți să ștergeți acest review?')) {
+        reviewsList = reviewsList.filter(rev => rev.id !== id);
+        localStorage.setItem('mas_reviews', JSON.stringify(reviewsList));
+        renderReviews();
+      }
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const customerVal = inputCustomer.value.trim();
+      const carVal = inputCar.value.trim();
+      const ratingVal = parseInt(inputRating.value);
+      const statusVal = parseInt(inputStatus.value);
+      const textVal = inputText.value.trim();
+
+      const newRev = {
+        id: Date.now(),
+        customer_name: customerVal,
+        car: carVal,
+        rating: ratingVal,
+        review_text: textVal,
+        approved: statusVal
+      };
+      reviewsList.push(newRev);
+
+      localStorage.setItem('mas_reviews', JSON.stringify(reviewsList));
+      closeModal('review-modal');
+      renderReviews();
+    });
+
+    // Reset modal fields automatically when modal active class is removed
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isActive = modal.classList.contains('active');
+          if (!isActive) {
+            form.reset();
+          }
+        }
+      });
+    });
+    observer.observe(modal, { attributes: true });
+
+    renderReviews();
+  }
+
   // Media Library Manager
-  if (page === 'media.html') {
+  if (page === 'media') {
     const defaultMedia = [
       "https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=800&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1600705722908-bab1e61c0b4d?q=80&w=800&auto=format&fit=crop",
+      "assets/images/IMG_2523.jpg",
       "https://images.unsplash.com/photo-1611016186353-9af58c69a533?q=80&w=800&auto=format&fit=crop"
     ];
 
     let mediaList = JSON.parse(localStorage.getItem('mas_media'));
-    if (!mediaList || !Array.isArray(mediaList)) {
+    if (mediaList && Array.isArray(mediaList)) {
+      const oldIndex = mediaList.findIndex(item => typeof item === 'string' && item.includes('photo-1600705722908-bab1e61c0b4d'));
+      if (oldIndex !== -1) {
+        mediaList[oldIndex] = 'assets/images/IMG_2523.jpg';
+        localStorage.setItem('mas_media', JSON.stringify(mediaList));
+      }
+    } else {
       mediaList = defaultMedia;
       localStorage.setItem('mas_media', JSON.stringify(mediaList));
     }
 
     let imageSlots = JSON.parse(localStorage.getItem('mas_image_slots') || '{}');
+    if (imageSlots['home_about'] && imageSlots['home_about'].includes('photo-1600705722908-bab1e61c0b4d')) {
+      imageSlots['home_about'] = 'assets/images/IMG_2523.jpg';
+      localStorage.setItem('mas_image_slots', JSON.stringify(imageSlots));
+    }
 
     // Available positions / slots (General media only, projects are managed separately)
     const slots = [
@@ -367,7 +626,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Project Management System
-  if (page === 'projects.html') {
+  if (page === 'projects') {
     const defaultProjects = [
       {
         id: 1,
@@ -616,5 +875,179 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial render
     renderAdminProjects();
+  }
+
+  // Database Page Backup logic
+  if (page === 'database') {
+    const settings = JSON.parse(localStorage.getItem('mas_settings') || '{}');
+    const subs = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
+    const reviews = JSON.parse(localStorage.getItem('mas_reviews') || '[]');
+    const projects = JSON.parse(localStorage.getItem('mas_projects') || '[]');
+
+    // Populate counts
+    const dbStatSettings = document.getElementById('db-stat-settings');
+    const dbStatSubmissions = document.getElementById('db-stat-submissions');
+    const dbStatReviews = document.getElementById('db-stat-reviews');
+    const dbStatProjects = document.getElementById('db-stat-projects');
+
+    if (dbStatSettings) dbStatSettings.textContent = Object.keys(settings).length;
+    if (dbStatSubmissions) dbStatSubmissions.textContent = subs.length;
+    if (dbStatReviews) dbStatReviews.textContent = reviews.length;
+    if (dbStatProjects) dbStatProjects.textContent = projects.length;
+
+    // Download Backup click handler
+    const dlBtn = document.getElementById('btn-download-sql');
+    if (dlBtn) {
+      dlBtn.addEventListener('click', () => {
+        let sql = `-- Mas Performance Database Backup\n`;
+        sql += `-- Generated at: ${new Date().toISOString()}\n\n`;
+        sql += `SET FOREIGN_KEY_CHECKS = 0;\n\n`;
+
+        // 1. site_settings
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `-- Table structure for table \`site_settings\`\n`;
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `DROP TABLE IF EXISTS \`site_settings\`;\n`;
+        sql += `CREATE TABLE \`site_settings\` (\n`;
+        sql += `  \`key\` varchar(100) NOT NULL,\n`;
+        sql += `  \`value\` text,\n`;
+        sql += `  PRIMARY KEY (\`key\`)\n`;
+        sql += `) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
+
+        sql += `-- Dumping data for table \`site_settings\`\n`;
+        if (Object.keys(settings).length > 0) {
+          sql += `INSERT INTO \`site_settings\` (\`key\`, \`value\`) VALUES\n`;
+          const entries = Object.entries(settings).map(([k, v]) => {
+            const safeVal = String(v).replace(/'/g, "''").replace(/\\/g, "\\\\").replace(/\n/g, "\\n");
+            return `('${k}', '${safeVal}')`;
+          });
+          sql += entries.join(',\n') + ';\n';
+        }
+        sql += `\n`;
+
+        // 2. projects
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `-- Table structure for table \`projects\`\n`;
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `DROP TABLE IF EXISTS \`projects\`;\n`;
+        sql += `CREATE TABLE \`projects\` (\n`;
+        sql += `  \`id\` bigint(20) NOT NULL,\n`;
+        sql += `  \`title\` varchar(255) DEFAULT NULL,\n`;
+        sql += `  \`desc_ro\` text,\n`;
+        sql += `  \`desc_en\` text,\n`;
+        sql += `  \`stock\` varchar(100) DEFAULT NULL,\n`;
+        sql += `  \`tuned\` varchar(100) DEFAULT NULL,\n`;
+        sql += `  \`image\` text,\n`;
+        sql += `  PRIMARY KEY (\`id\`)\n`;
+        sql += `) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
+
+        sql += `-- Dumping data for table \`projects\`\n`;
+        if (projects.length > 0) {
+          sql += `INSERT INTO \`projects\` (\`id\`, \`title\`, \`desc_ro\`, \`desc_en\`, \`stock\`, \`tuned\`, \`image\`) VALUES\n`;
+          const entries = projects.map(p => {
+            const title = String(p.title || '').replace(/'/g, "''");
+            const descRo = String(p.desc_ro || '').replace(/'/g, "''");
+            const descEn = String(p.desc_en || '').replace(/'/g, "''");
+            const stock = String(p.stock || '').replace(/'/g, "''");
+            const tuned = String(p.tuned || '').replace(/'/g, "''");
+            const image = String(p.image || '').replace(/'/g, "''");
+            return `(${p.id}, '${title}', '${descRo}', '${descEn}', '${stock}', '${tuned}', '${image}')`;
+          });
+          sql += entries.join(',\n') + ';\n';
+        }
+        sql += `\n`;
+
+        // 3. reviews
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `-- Table structure for table \`reviews\`\n`;
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `DROP TABLE IF EXISTS \`reviews\`;\n`;
+        sql += `CREATE TABLE \`reviews\` (\n`;
+        sql += `  \`id\` bigint(20) NOT NULL,\n`;
+        sql += `  \`customer_name\` varchar(100) DEFAULT NULL,\n`;
+        sql += `  \`car\` varchar(100) DEFAULT NULL,\n`;
+        sql += `  \`rating\` int(11) DEFAULT NULL,\n`;
+        sql += `  \`review_text\` text,\n`;
+        sql += `  \`approved\` tinyint(1) DEFAULT '0',\n`;
+        sql += `  PRIMARY KEY (\`id\`)\n`;
+        sql += `) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
+
+        sql += `-- Dumping data for table \`reviews\`\n`;
+        if (reviews.length > 0) {
+          sql += `INSERT INTO \`reviews\` (\`id\`, \`customer_name\`, \`car\`, \`rating\`, \`review_text\`, \`approved\`) VALUES\n`;
+          const entries = reviews.map(r => {
+            const name = String(r.customer_name || '').replace(/'/g, "''");
+            const car = String(r.car || '').replace(/'/g, "''");
+            let text = r.review_text;
+            if (typeof text === 'object' && text !== null) {
+              text = text.ro || text.en || '';
+            }
+            const safeText = String(text || '').replace(/'/g, "''");
+            return `(${r.id}, '${name}', '${car}', ${r.rating}, '${safeText}', ${r.approved})`;
+          });
+          sql += entries.join(',\n') + ';\n';
+        }
+        sql += `\n`;
+
+        // 4. contact_submissions
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `-- Table structure for table \`contact_submissions\`\n`;
+        sql += `-- ------------------------------------------------------\n`;
+        sql += `DROP TABLE IF EXISTS \`contact_submissions\`;\n`;
+        sql += `CREATE TABLE \`contact_submissions\` (\n`;
+        sql += `  \`id\` bigint(20) NOT NULL,\n`;
+        sql += `  \`full_name\` varchar(100) DEFAULT NULL,\n`;
+        sql += `  \`email\` varchar(100) DEFAULT NULL,\n`;
+        sql += `  \`phone\` varchar(20) DEFAULT NULL,\n`;
+        sql += `  \`car_brand\` varchar(50) DEFAULT NULL,\n`;
+        sql += `  \`car_model\` varchar(50) DEFAULT NULL,\n`;
+        sql += `  \`year\` int(11) DEFAULT NULL,\n`;
+        sql += `  \`engine\` varchar(50) DEFAULT NULL,\n`;
+        sql += `  \`fuel\` varchar(20) DEFAULT NULL,\n`;
+        sql += `  \`mileage\` int(11) DEFAULT NULL,\n`;
+        sql += `  \`message\` text,\n`;
+        sql += `  \`contact_method\` varchar(20) DEFAULT NULL,\n`;
+        sql += `  \`contact_time\` varchar(30) DEFAULT NULL,\n`;
+        sql += `  \`submitted_at\` varchar(50) DEFAULT NULL,\n`;
+        sql += `  \`is_read\` tinyint(1) DEFAULT '0',\n`;
+        sql += `  PRIMARY KEY (\`id\`)\n`;
+        sql += `) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;\n\n`;
+
+        sql += `-- Dumping data for table \`contact_submissions\`\n`;
+        if (subs.length > 0) {
+          sql += `INSERT INTO \`contact_submissions\` (\`id\`, \`full_name\`, \`email\`, \`phone\`, \`car_brand\`, \`car_model\`, \`year\`, \`engine\`, \`fuel\`, \`mileage\`, \`message\`, \`contact_method\`, \`contact_time\`, \`submitted_at\`, \`is_read\`) VALUES\n`;
+          const entries = subs.map(s => {
+            const name = String(s.full_name || '').replace(/'/g, "''");
+            const email = String(s.email || '').replace(/'/g, "''");
+            const phone = String(s.phone || '').replace(/'/g, "''");
+            const brand = String(s.car_brand || '').replace(/'/g, "''");
+            const model = String(s.car_model || '').replace(/'/g, "''");
+            const engine = String(s.engine || '').replace(/'/g, "''");
+            const fuel = String(s.fuel || '').replace(/'/g, "''");
+            const mileage = s.mileage ? s.mileage : 'NULL';
+            const msg = String(s.message || '').replace(/'/g, "''");
+            const method = String(s.contact_method || '').replace(/'/g, "''");
+            const time = String(s.contact_time || '').replace(/'/g, "''");
+            const date = String(s.submitted_at || '').replace(/'/g, "''");
+            return `(${s.id}, '${name}', '${email}', '${phone}', '${brand}', '${model}', ${s.year}, '${engine}', '${fuel}', ${mileage}, '${msg}', '${method}', '${time}', '${date}', ${s.is_read})`;
+          });
+          sql += entries.join(',\n') + ';\n';
+        }
+        sql += `\n`;
+
+        sql += `SET FOREIGN_KEY_CHECKS = 1;\n`;
+        
+        // Trigger download
+        const blob = new Blob([sql], { type: 'text/plain;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        const now = new Date();
+        const dateStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+        a.download = `mas_performance_backup_${dateStr}.sql`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      });
+    }
   }
 });

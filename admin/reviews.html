@@ -17,8 +17,8 @@
       <a href="dashboard.html">Dashboard</a>
       <a href="submissions.html">Submissions</a>
       <a href="reviews.html" class="active">Reviews</a>
-      <a href="media.html">Media</a>
       <a href="projects.html">Projects</a>
+      <a href="database.html">Database</a>
       <a href="settings.html">Settings</a>
     </nav>
     <div class="admin-logout">
@@ -29,7 +29,7 @@
   <main class="admin-main">
     <header class="admin-header">
       <h1 style="font-family: var(--font-heading); font-size:1.5rem;">Customer Reviews</h1>
-      <button class="btn btn-primary" onclick="alert('Add Review Modal')">Add Review</button>
+      <button class="btn btn-primary" id="add-review-btn">Add Review</button>
     </header>
 
     <div class="admin-content">
@@ -44,32 +44,65 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>Andrei Popescu</td>
-              <td>BMW F30 320d</td>
-              <td style="color:var(--accent-color)">★★★★★</td>
-              <td><span class="badge badge-success">Approved</span></td>
-              <td>
-                <button class="btn btn-outline btn-small">Edit</button>
-                <button class="btn btn-primary btn-small">Del</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Mihai Ionescu</td>
-              <td>VW Golf 7 2.0 TDI</td>
-              <td style="color:var(--accent-color)">★★★★★</td>
-              <td><span class="badge badge-success">Approved</span></td>
-              <td>
-                <button class="btn btn-outline btn-small">Edit</button>
-                <button class="btn btn-primary btn-small">Del</button>
-              </td>
-            </tr>
+          <tbody id="reviews-tbody">
+            <!-- JS populated -->
           </tbody>
         </table>
       </div>
     </div>
   </main>
+
+  <!-- Review Manage Modal -->
+  <div id="review-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px; padding: 2rem; background: var(--surface-1); border: 1px solid var(--border-color); color: var(--text-primary);">
+      <button class="modal-close" onclick="closeModal('review-modal')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; position: absolute; top: 1rem; right: 1rem;">&times;</button>
+      <h2 id="review-modal-title" style="font-family: var(--font-heading); font-size:1.4rem; margin-bottom: 1.5rem; color: var(--accent-color);">Manage Review</h2>
+      
+      <form id="review-form">
+        <input type="hidden" id="review-id">
+        
+        <div class="form-group">
+          <label for="review-customer">Customer Name</label>
+          <input type="text" id="review-customer" class="form-control" required placeholder="e.g. Andrei Popescu">
+        </div>
+        
+        <div class="form-group">
+          <label for="review-car">Car Model</label>
+          <input type="text" id="review-car" class="form-control" required placeholder="e.g. BMW F30 320d">
+        </div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label for="review-rating">Rating</label>
+            <select id="review-rating" class="form-control" required>
+              <option value="5">★★★★★ (5 Stars)</option>
+              <option value="4">★★★★☆ (4 Stars)</option>
+              <option value="3">★★★☆☆ (3 Stars)</option>
+              <option value="2">★★☆☆☆ (2 Stars)</option>
+              <option value="1">★☆☆☆☆ (1 Star)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="review-status">Status</label>
+            <select id="review-status" class="form-control" required>
+              <option value="1">Approved</option>
+              <option value="0">Pending</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="review-text">Review Text</label>
+          <textarea id="review-text" class="form-control" style="min-height: 100px;" required placeholder="Customer review text..."></textarea>
+        </div>
+        
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 2rem;">
+          <button type="button" class="btn btn-outline" onclick="closeModal('review-modal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="clip-path: none;">Save Review</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="../js/admin.js"></script>
 </body>

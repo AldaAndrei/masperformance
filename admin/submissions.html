@@ -17,8 +17,8 @@
       <a href="dashboard.html">Dashboard</a>
       <a href="submissions.html" class="active">Submissions</a>
       <a href="reviews.html">Reviews</a>
-      <a href="media.html">Media</a>
       <a href="projects.html">Projects</a>
+      <a href="database.html">Database</a>
       <a href="settings.html">Settings</a>
     </nav>
     <div class="admin-logout">
@@ -56,6 +56,22 @@
       </div>
     </div>
   </main>
+
+  <!-- Submission Details Modal -->
+  <div id="sub-modal" class="modal-overlay">
+    <div class="modal-content" style="max-width: 600px; padding: 2rem; background: var(--surface-1); border: 1px solid var(--border-color); color: var(--text-primary);">
+      <button class="modal-close" onclick="closeModal('sub-modal')" style="background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; position: absolute; top: 1rem; right: 1rem;">&times;</button>
+      <h2 style="font-family: var(--font-heading); font-size:1.4rem; margin-bottom: 1.5rem; color: var(--accent-color);">Submission Details</h2>
+      
+      <div id="sub-details-content" style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.95rem; line-height: 1.6;">
+        <!-- Dynamically populated -->
+      </div>
+      
+      <div style="display: flex; justify-content: flex-end; margin-top: 2rem;">
+        <button class="btn btn-primary" onclick="closeModal('sub-modal')">Close</button>
+      </div>
+    </div>
+  </div>
 
   <script src="../js/admin.js"></script>
 </body>
