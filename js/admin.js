@@ -196,7 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
         tr.innerHTML = `
           <td>${s.full_name}</td>
           <td>${s.phone}</td>
-          <td>${s.car_brand} ${s.car_model}</td>
+          <td>
+            ${s.car_brand} ${s.car_model}
+            ${s.vin ? `<br><small style="color:var(--text-muted); font-size:0.75rem;">VIN: ${s.vin}</small>` : ''}
+          </td>
           <td>${new Date(s.submitted_at).toLocaleDateString()}</td>
           <td><span class="badge ${s.is_read ? 'badge-success' : 'badge-warning'}">${s.is_read ? 'Read' : 'New'}</span></td>
           <td>
@@ -245,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Car Info</strong>
               <div style="margin-top: 0.25rem;"><strong>${sub.car_brand} ${sub.car_model}</strong> (${sub.year})</div>
               <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem;">Engine: ${sub.engine} | Fuel: ${sub.fuel} | Mileage: ${sub.mileage ? sub.mileage + ' km' : '-'}</div>
+              <div style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.25rem;">VIN: <strong>${sub.vin || '-'}</strong></div>
             </div>
             <div>
               <strong style="color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase;">Contact Preference</strong>

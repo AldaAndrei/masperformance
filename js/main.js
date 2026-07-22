@@ -259,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
         engine: document.getElementById('engine').value,
         fuel: document.getElementById('fuel').value,
         mileage: document.getElementById('mileage').value,
+        vin: document.getElementById('vin').value.trim().toUpperCase(),
         message: document.getElementById('details').value,
         contact_method: method,
         contact_time: document.getElementById('time').value,
