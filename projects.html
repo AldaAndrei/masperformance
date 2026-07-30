@@ -44,6 +44,27 @@
   </footer>
   <!-- PHP INCLUDE END: footer -->
 
+  <!-- Project Photo Lightbox -->
+  <div id="project-lightbox" class="modal-overlay">
+    <div class="modal-content" style="max-width: 900px;">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="lightbox-project-title" style="font-family: var(--font-heading); margin-bottom: 1.5rem; padding-right: 2rem;"></h3>
+
+      <div class="gallery-carousel" id="lightbox-carousel" style="aspect-ratio: 16/9;">
+        <div class="carousel-track" id="lightbox-carousel-track"></div>
+
+        <button class="carousel-btn carousel-btn-prev" id="lightbox-carousel-prev" aria-label="Previous slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </button>
+        <button class="carousel-btn carousel-btn-next" id="lightbox-carousel-next" aria-label="Next slide">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </button>
+
+        <div class="carousel-dots" id="lightbox-carousel-dots"></div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/lang.js?v=1.3"></script>
   <script src="js/main.js?v=1.3"></script>
 </body>

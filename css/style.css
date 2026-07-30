@@ -334,14 +334,8 @@ header.navbar {
 
 .about-img {
   position: relative;
-  aspect-ratio: 1/1;
-  filter: grayscale(100%);
-  transition: var(--transition);
+  aspect-ratio: 4/5;
   overflow: hidden;
-}
-
-.about-img:hover {
-  filter: grayscale(0%);
 }
 
 .about-img img {
@@ -1010,6 +1004,176 @@ textarea.form-control {
     right: 1.5rem;
   }
 }
+
+/* ============================================================
+   Despre Noi – Photo Carousel (sits inside .about-img, in place
+   of the old single Workshop photo)
+   ============================================================ */
+.gallery-carousel {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: var(--surface-1);
+}
+
+.about-img .gallery-carousel,
+.about-img .carousel-track,
+.about-img .carousel-slide {
+  height: 100%;
+}
+
+.about-img .carousel-empty {
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#lightbox-carousel,
+#lightbox-carousel .carousel-track,
+#lightbox-carousel .carousel-slide {
+  height: 100%;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: transform;
+}
+
+.carousel-slide {
+  /* flex-basis must be a definite 100% (not "auto") — otherwise a flex
+     item sized by content fights the img's own width:100%, and very
+     wide/tall photos blow the slide out to their natural aspect ratio
+     instead of being contained within the frame. */
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  height: 520px;
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-slide-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(30px) brightness(0.55);
+  transform: scale(1.15);
+}
+
+.carousel-slide-fg,
+.about-img .carousel-slide-fg {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.about-img .carousel-slide-bg {
+  object-fit: cover;
+}
+
+.carousel-slide:hover .carousel-slide-fg {
+  transform: scale(1.03);
+}
+
+/* Overlay gradient bottom */
+.carousel-slide::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30%;
+  background: linear-gradient(to top, rgba(10,10,10,0.6), transparent);
+  pointer-events: none;
+}
+
+/* Navigation Buttons */
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10, 10, 10, 0.65);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+  border-radius: 0;
+  clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+}
+
+.carousel-btn:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.carousel-btn svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.carousel-btn-prev { left: 1.5rem; }
+.carousel-btn-next { right: 1.5rem; }
+
+/* Dots */
+.carousel-dots {
+  position: absolute;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.5rem;
+  z-index: 10;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+  border: none;
+  padding: 0;
+}
+
+.carousel-dot.active {
+  background: var(--accent-color);
+  transform: scale(1.4);
+  box-shadow: 0 0 8px rgba(208,2,27,0.6);
+}
+
+.carousel-dot:hover:not(.active) {
+  background: rgba(255,255,255,0.7);
+}
+
+/* Empty state */
+.carousel-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  color: var(--text-muted);
+  border: 2px dashed var(--border-color);
+  font-style: italic;
+}
+
+/* ============================================================ */
 
 /* Responsive */
 @media (max-width: 1024px) {

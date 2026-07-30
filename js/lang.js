@@ -119,6 +119,7 @@ const translations = {
     'partners.title.1': 'Parteneri',
     'partners.title.2': 'De Încredere',
     'partners.sub': 'Colaborăm cu cei mai buni din industrie pentru a-ți oferi servicii de top.',
+    'partners.click_hint': 'Click pe logo-ul partenerului pentru mai multe detalii',
     'partners.alientech.name': 'Alientech',
     'partners.alientech.desc': 'Lider mondial în domeniul calibrării motorului și programării ECU, cunoscut pentru instrumente de top precum KESS3 și software-ul ECM Titanium.',
     'partners.autel.name': 'Autel',
@@ -153,6 +154,16 @@ const translations = {
     'contact.form.sending': 'Se trimite...',
     'contact.form.sent': 'Trimis cu succes!',
     'contact.info.phone_whatsapp': 'Telefon & WhatsApp',
+
+    // Gallery
+    'about.gallery.title.1': 'Galeria',
+    'about.gallery.title.2': ' Noastră',
+    'about.gallery.empty': 'Nicio imagine adăugată încă. Adaugă poze din panoul de administrare.',
+
+    // Birthday popup (Massimo Rosu — Aug 4, 2026)
+    'birthday.title': 'La Mulți Ani, Massimo!',
+    'birthday.message': 'Astăzi sărbătorim 24 de ani de viață ai fondatorului MasPerformance, Massimo Rosu. Îi mulțumim pentru pasiunea și dedicarea care au făcut posibil acest site și tot ce construim împreună. La mulți ani!',
+
     'contact.info.email_label': 'Email',
     'contact.info.address.val': 'Bulevardul Iuliu Maniu nr. 1, Sector 6, București, România',
     'contact.info.hours.val': 'Luni - Vineri: 09:00 - 18:00, Sâmbătă - Duminică: Închis',
@@ -280,6 +291,7 @@ const translations = {
     'partners.title.1': 'Trusted',
     'partners.title.2': 'Partners',
     'partners.sub': 'We collaborate with the best in the industry to offer you top-notch services.',
+    'partners.click_hint': 'Click on a partner\'s logo for more details',
     'partners.alientech.name': 'Alientech',
     'partners.alientech.desc': 'A world leader in engine calibration and ECU programming, renowned for state-of-the-art tools like KESS3 and ECM Titanium software.',
     'partners.autel.name': 'Autel',
@@ -314,6 +326,16 @@ const translations = {
     'contact.form.sending': 'Sending...',
     'contact.form.sent': 'Sent Successfully!',
     'contact.info.phone_whatsapp': 'Phone & WhatsApp',
+
+    // Gallery
+    'about.gallery.title.1': 'Our',
+    'about.gallery.title.2': ' Gallery',
+    'about.gallery.empty': 'No images added yet. Add photos from the admin panel.',
+
+    // Birthday popup (Massimo Rosu — Aug 4, 2026)
+    'birthday.title': 'Happy Birthday, Massimo!',
+    'birthday.message': 'Today we celebrate 24 years of MasPerformance founder Massimo Rosu. Thank you for the passion and dedication that made this site and everything we build together possible. Happy Birthday!',
+
     'contact.info.email_label': 'Email',
     'contact.info.address.val': '1 Iuliu Maniu Boulevard, District 6, Bucharest, Romania',
     'contact.info.hours.val': 'Monday - Friday: 09:00 - 18:00, Saturday - Sunday: Closed',

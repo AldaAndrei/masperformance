@@ -436,6 +436,60 @@ body {
   border-color: var(--accent-color);
 }
 
+/* Media Library Tabs */
+.media-chapters {
+  margin-bottom: 2rem;
+}
+
+.media-tab-nav {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.media-tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.5rem;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.media-tab-btn:hover {
+  color: #fff;
+}
+
+.media-tab-btn.active {
+  color: var(--accent-color);
+  border-bottom-color: var(--accent-color);
+}
+
+.media-panel {
+  display: none;
+}
+
+.media-panel.active {
+  display: block;
+}
+
+.media-chapter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 /* Project Management Styles */
 .project-thumbnail {
   width: 90px;

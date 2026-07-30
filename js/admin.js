@@ -58,7 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Dashboard Stats
   const page = window.location.pathname.split('/').pop().toLowerCase().replace('.html', '');
-  
+
+  // Stored image paths are relative to the site root (so they resolve
+  // correctly on public pages); prefix with ../ when rendered here since
+  // admin pages live one directory below root.
+  const resolveAdminSrc = (src) => /^(https?:|data:)/.test(src) ? src : `../${src}`;
+
   if (page === 'dashboard') {
     const subs = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
     const reviews = JSON.parse(localStorage.getItem('mas_reviews') || '[]');
@@ -203,15 +208,27 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${new Date(s.submitted_at).toLocaleDateString()}</td>
           <td><span class="badge ${s.is_read ? 'badge-success' : 'badge-warning'}">${s.is_read ? 'Read' : 'New'}</span></td>
           <td>
-            <button class="btn btn-outline btn-small" onclick="viewSub(${s.id})">View</button>
+            <div class="action-btns">
+              <button class="btn btn-outline btn-small" onclick="viewSub(${s.id})">View</button>
+              <button class="btn btn-primary btn-small" onclick="deleteSub(${s.id})">Del</button>
+            </div>
           </td>
         `;
         tbody.appendChild(tr);
       });
     };
-    
+
     renderSubs();
-    
+
+    window.deleteSub = function(id) {
+      if (confirm('Sigur doriți să ștergeți această solicitare?')) {
+        const index = subs.findIndex(s => s.id === id);
+        if (index !== -1) subs.splice(index, 1);
+        localStorage.setItem('contact_submissions', JSON.stringify(subs));
+        renderSubs();
+      }
+    };
+
     window.viewSub = function(id) {
       const sub = subs.find(s => s.id === id);
       if(!sub) return;
@@ -416,8 +433,222 @@ document.addEventListener('DOMContentLoaded', () => {
     renderReviews();
   }
 
+  // Services Management System
+  if (page === 'services') {
+    const defaultServices = [
+      {
+        id: 1,
+        title_ro: 'Stage 1',
+        title_en: 'Stage 1',
+        desc_ro: 'Optimizare software pe hardware-ul original al mașinii. Creștere sigură de putere și cuplu, fără modificări fizice.',
+        desc_en: 'Software optimization on the car\'s original hardware. Safe power and torque gains, no physical modifications required.'
+      },
+      {
+        id: 2,
+        title_ro: 'Stage 2',
+        title_en: 'Stage 2',
+        desc_ro: 'Pentru mașini cu modificări hardware (evacuare, admisie, intercooler). Extragem potențialul maxim al motorului.',
+        desc_en: 'For cars with supporting hardware upgrades (exhaust, intake, intercooler). We extract the engine\'s maximum potential.'
+      },
+      {
+        id: 3,
+        title_ro: 'EGR / DPF / AdBlue Off',
+        title_en: 'EGR / DPF / AdBlue Off',
+        desc_ro: 'Dezactivare software pentru sisteme EGR, DPF și AdBlue, pentru fiabilitate crescută pe mașinile folosite intensiv.',
+        desc_en: 'Software-based deactivation of EGR, DPF and AdBlue systems, for improved reliability on heavily-used vehicles.'
+      },
+      {
+        id: 4,
+        title_ro: 'Pops & Bangs',
+        title_en: 'Pops & Bangs',
+        desc_ro: 'Calibrare personalizată a sunetului de evacuare, de la subtil la agresiv, adaptată exact preferințelor tale.',
+        desc_en: 'Custom exhaust sound calibration, from subtle to aggressive, tailored exactly to your preference.'
+      },
+      {
+        id: 5,
+        title_ro: 'Remap Cutii Automate',
+        title_en: 'Automatic Gearbox Remap',
+        desc_ro: 'Optimizare software pentru cutii DSG/Tiptronic — schimbări de viteză mai rapide și livrare mai directă a puterii.',
+        desc_en: 'Software tuning for DSG/Tiptronic gearboxes — faster shifts and more direct power delivery.'
+      },
+      {
+        id: 6,
+        title_ro: 'Diagnoză & Logging',
+        title_en: 'Diagnostics & Logging',
+        desc_ro: 'Citire completă a parametrilor motorului în timp real, pentru depanare precisă și calibrări sigure.',
+        desc_en: 'Full real-time engine parameter logging, for precise troubleshooting and safe calibrations.'
+      }
+    ];
+
+    let services = JSON.parse(localStorage.getItem('mas_services'));
+    if (!services || !Array.isArray(services)) {
+      services = defaultServices;
+      localStorage.setItem('mas_services', JSON.stringify(services));
+    }
+
+    const tbody = document.getElementById('services-tbody');
+    const modal = document.getElementById('service-modal');
+    const form = document.getElementById('service-form');
+    const addBtn = document.getElementById('add-service-btn');
+
+    const inputId = document.getElementById('service-id');
+    const inputTitleRo = document.getElementById('service-title-ro');
+    const inputTitleEn = document.getElementById('service-title-en');
+    const inputDescRo = document.getElementById('service-desc-ro');
+    const inputDescEn = document.getElementById('service-desc-en');
+
+    const saveServices = () => localStorage.setItem('mas_services', JSON.stringify(services));
+
+    const renderServicesAdmin = () => {
+      tbody.innerHTML = '';
+      services = JSON.parse(localStorage.getItem('mas_services')) || [];
+
+      services.forEach((s, index) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div style="display:flex; flex-direction:column; gap:0.25rem;">
+              <button class="btn btn-outline btn-small" style="clip-path:none; padding:0.2rem 0.5rem;" onclick="moveServiceUp(${index})" ${index === 0 ? 'disabled' : ''}>↑</button>
+              <button class="btn btn-outline btn-small" style="clip-path:none; padding:0.2rem 0.5rem;" onclick="moveServiceDown(${index})" ${index === services.length - 1 ? 'disabled' : ''}>↓</button>
+            </div>
+          </td>
+          <td>
+            <div><strong>RO:</strong> ${s.title_ro}</div>
+            <div style="color:var(--text-muted);"><strong>EN:</strong> ${s.title_en}</div>
+          </td>
+          <td>
+            <div style="font-size:0.85rem;">${s.desc_ro}</div>
+            <div style="font-size:0.85rem; color:var(--text-muted); margin-top:0.25rem;">${s.desc_en}</div>
+          </td>
+          <td>
+            <div class="action-btns">
+              <button class="btn btn-outline btn-small" onclick="editService(${s.id})">Edit</button>
+              <button class="btn btn-primary btn-small" onclick="deleteService(${s.id})">Del</button>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    };
+
+    window.moveServiceUp = function(index) {
+      if (index === 0) return;
+      [services[index - 1], services[index]] = [services[index], services[index - 1]];
+      saveServices();
+      renderServicesAdmin();
+    };
+
+    window.moveServiceDown = function(index) {
+      if (index === services.length - 1) return;
+      [services[index + 1], services[index]] = [services[index], services[index + 1]];
+      saveServices();
+      renderServicesAdmin();
+    };
+
+    addBtn.addEventListener('click', () => {
+      document.getElementById('service-modal-title').textContent = 'Add New Service';
+      inputId.value = '';
+      form.reset();
+      openModal('service-modal');
+    });
+
+    window.editService = function(id) {
+      const s = services.find(sv => sv.id === id);
+      if (!s) return;
+      document.getElementById('service-modal-title').textContent = 'Edit Service';
+      inputId.value = s.id;
+      inputTitleRo.value = s.title_ro;
+      inputTitleEn.value = s.title_en;
+      inputDescRo.value = s.desc_ro;
+      inputDescEn.value = s.desc_en;
+      openModal('service-modal');
+    };
+
+    window.deleteService = function(id) {
+      if (confirm('Sigur doriți să ștergeți acest serviciu?')) {
+        services = services.filter(sv => sv.id !== id);
+        saveServices();
+        renderServicesAdmin();
+      }
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      if (!form.checkValidity()) {
+        const firstInvalid = form.querySelector(':invalid');
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstInvalid.reportValidity();
+        }
+        return;
+      }
+
+      const idVal = inputId.value;
+      const titleRoVal = inputTitleRo.value.trim();
+      const titleEnVal = inputTitleEn.value.trim();
+      const descRoVal = inputDescRo.value.trim();
+      const descEnVal = inputDescEn.value.trim();
+
+      if (idVal) {
+        const index = services.findIndex(sv => sv.id === parseInt(idVal));
+        if (index !== -1) {
+          services[index] = { id: parseInt(idVal), title_ro: titleRoVal, title_en: titleEnVal, desc_ro: descRoVal, desc_en: descEnVal };
+        }
+      } else {
+        services.push({ id: Date.now(), title_ro: titleRoVal, title_en: titleEnVal, desc_ro: descRoVal, desc_en: descEnVal });
+      }
+
+      saveServices();
+      closeModal('service-modal');
+      renderServicesAdmin();
+    });
+
+    const servicesObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          const isActive = modal.classList.contains('active');
+          if (!isActive) {
+            form.reset();
+          }
+        }
+      });
+    });
+    servicesObserver.observe(modal, { attributes: true });
+
+    renderServicesAdmin();
+  }
+
   // Media Library Manager
   if (page === 'media') {
+
+    // Tab switching (General / Despre Noi)
+    const tabBtns = document.querySelectorAll('.media-tab-btn');
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.getAttribute('data-tab');
+
+        tabBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        document.querySelectorAll('.media-panel').forEach(panel => {
+          panel.style.display = 'none';
+          panel.classList.remove('active');
+        });
+
+        const activePanel = document.getElementById(`panel-${tab}`);
+        if (activePanel) {
+          activePanel.style.display = 'block';
+          activePanel.classList.add('active');
+        }
+      });
+    });
+
+    // Reassigned once the "Toate Imaginile" overview is set up below;
+    // each category's render() calls this so the overview stays in sync
+    // regardless of which tab the edit happened from.
+    let refreshOverview = () => {};
+
     const defaultMedia = [
       "https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop",
       "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=800&auto=format&fit=crop",
@@ -444,10 +675,22 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('mas_image_slots', JSON.stringify(imageSlots));
     }
 
+    // "Despre Noi: Workshop" was retired in favor of the carousel sitting
+    // directly in that spot on the page; drop whatever was assigned there.
+    if (imageSlots['about_workshop']) {
+      const workshopImg = imageSlots['about_workshop'];
+      delete imageSlots['about_workshop'];
+      localStorage.setItem('mas_image_slots', JSON.stringify(imageSlots));
+      const workshopIndex = mediaList.indexOf(workshopImg);
+      if (workshopIndex !== -1) {
+        mediaList.splice(workshopIndex, 1);
+        localStorage.setItem('mas_media', JSON.stringify(mediaList));
+      }
+    }
+
     // Available positions / slots (General media only, projects are managed separately)
     const slots = [
-      { id: "home_about", name: "Acasă: Despre Noi" },
-      { id: "about_workshop", name: "Despre Noi: Workshop" }
+      { id: "home_about", name: "Acasă: Despre Noi" }
     ];
 
     const grid = document.getElementById('admin-media-grid');
@@ -456,9 +699,21 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlForm = document.getElementById('url-upload-form');
     const urlInput = document.getElementById('url-upload-input');
 
+    const deleteMediaAt = (index) => {
+      const imgSrc = mediaList[index];
+      // Remove any slot assignment pointing to this image
+      for (const [slotId, src] of Object.entries(imageSlots)) {
+        if (src === imgSrc) delete imageSlots[slotId];
+      }
+      localStorage.setItem('mas_image_slots', JSON.stringify(imageSlots));
+      mediaList.splice(index, 1);
+      localStorage.setItem('mas_media', JSON.stringify(mediaList));
+      renderMedia();
+    };
+
     const renderMedia = () => {
       grid.innerHTML = '';
-      
+
       // Update imageSlots in case any references got broken or cleaned
       imageSlots = JSON.parse(localStorage.getItem('mas_image_slots') || '{}');
 
@@ -483,7 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
         imgContainer.className = 'media-item-img-container';
         
         const img = document.createElement('img');
-        img.src = imgSrc;
+        img.src = resolveAdminSrc(imgSrc);
         img.alt = 'Media File';
         imgContainer.appendChild(img);
 
@@ -500,15 +755,7 @@ document.addEventListener('DOMContentLoaded', () => {
         delBtn.title = 'Șterge imaginea';
         delBtn.addEventListener('click', () => {
           if (confirm('Sigur doriți să ștergeți această imagine din bibliotecă?')) {
-            // Remove assignment if any
-            if (activeSlotId) {
-              delete imageSlots[activeSlotId];
-              localStorage.setItem('mas_image_slots', JSON.stringify(imageSlots));
-            }
-            // Remove from list
-            mediaList.splice(index, 1);
-            localStorage.setItem('mas_media', JSON.stringify(mediaList));
-            renderMedia();
+            deleteMediaAt(index);
           }
         });
         imgContainer.appendChild(delBtn);
@@ -565,6 +812,8 @@ document.addEventListener('DOMContentLoaded', () => {
         item.appendChild(info);
         grid.appendChild(item);
       });
+
+      refreshOverview();
     };
 
     // Trigger file input on dropzone click
@@ -627,6 +876,252 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    renderMedia();
+
+    // =====================================================
+    // Per-page Gallery Manager (carousel images for Acasă / Despre Noi / Proiecte / Contact)
+    // =====================================================
+    const initGalleryTab = (key, label) => {
+      const grid = document.getElementById(`${key}-media-grid`);
+      if (!grid) return;
+
+      const storageKey = `mas_gallery_${key}`;
+      let gallery = JSON.parse(localStorage.getItem(storageKey) || '[]');
+
+      const dropZone = document.getElementById(`${key}-drop-zone`);
+      const fileInput = document.getElementById(`${key}-file-input`);
+      const urlForm = document.getElementById(`${key}-url-form`);
+      const urlInput = document.getElementById(`${key}-url-input`);
+      const countEl = document.getElementById(`${key}-gallery-count`);
+      const clearAllBtn = document.getElementById(`${key}-clear-all-btn`);
+      const emptyEl = document.getElementById(`${key}-gallery-empty`);
+
+      const saveGallery = () => {
+        localStorage.setItem(storageKey, JSON.stringify(gallery));
+      };
+
+      const deleteGalleryAt = (index) => {
+        gallery.splice(index, 1);
+        saveGallery();
+        renderGallery();
+      };
+
+      const renderGallery = () => {
+        grid.innerHTML = '';
+
+        if (countEl) {
+          countEl.textContent = gallery.length > 0 ? `${gallery.length} imagini` : '';
+        }
+
+        if (emptyEl) {
+          emptyEl.style.display = gallery.length === 0 ? 'block' : 'none';
+        }
+        grid.style.display = gallery.length === 0 ? 'none' : 'grid';
+
+        gallery.forEach((imgSrc, index) => {
+          const item = document.createElement('div');
+          item.className = 'media-item';
+
+          const imgContainer = document.createElement('div');
+          imgContainer.className = 'media-item-img-container';
+
+          const img = document.createElement('img');
+          img.src = resolveAdminSrc(imgSrc);
+          img.alt = `${label} – foto ${index + 1}`;
+          imgContainer.appendChild(img);
+
+          const delBtn = document.createElement('button');
+          delBtn.className = 'delete-btn';
+          delBtn.innerHTML = '&times;';
+          delBtn.title = 'Șterge imaginea';
+          delBtn.addEventListener('click', () => {
+            if (confirm('Sigur doriți să ștergeți această imagine din galerie?')) {
+              deleteGalleryAt(index);
+            }
+          });
+          imgContainer.appendChild(delBtn);
+
+          const info = document.createElement('div');
+          info.className = 'media-item-info';
+          info.style.cssText = 'flex-direction: row; justify-content: center; gap: 0.5rem;';
+
+          const upBtn = document.createElement('button');
+          upBtn.className = 'btn btn-outline btn-small';
+          upBtn.style.cssText = 'clip-path: none; padding: 0.4rem 0.75rem;';
+          upBtn.textContent = '↑';
+          upBtn.disabled = index === 0;
+          upBtn.addEventListener('click', () => {
+            if (index === 0) return;
+            [gallery[index - 1], gallery[index]] = [gallery[index], gallery[index - 1]];
+            saveGallery();
+            renderGallery();
+          });
+
+          const downBtn = document.createElement('button');
+          downBtn.className = 'btn btn-outline btn-small';
+          downBtn.style.cssText = 'clip-path: none; padding: 0.4rem 0.75rem;';
+          downBtn.textContent = '↓';
+          downBtn.disabled = index === gallery.length - 1;
+          downBtn.addEventListener('click', () => {
+            if (index === gallery.length - 1) return;
+            [gallery[index + 1], gallery[index]] = [gallery[index], gallery[index + 1]];
+            saveGallery();
+            renderGallery();
+          });
+
+          info.appendChild(upBtn);
+          info.appendChild(downBtn);
+
+          item.appendChild(imgContainer);
+          item.appendChild(info);
+          grid.appendChild(item);
+        });
+
+        refreshOverview();
+      };
+
+      // Trigger file input on dropzone click
+      dropZone.addEventListener('click', () => {
+        fileInput.click();
+      });
+
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropZone.classList.add('dragover');
+        }, false);
+      });
+
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          dropZone.classList.remove('dragover');
+        }, false);
+      });
+
+      const handleFiles = (files) => {
+        Array.from(files).forEach(file => {
+          if (!file.type.startsWith('image/')) return;
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            gallery.push(e.target.result);
+            saveGallery();
+            renderGallery();
+          };
+          reader.readAsDataURL(file);
+        });
+      };
+
+      dropZone.addEventListener('drop', (e) => {
+        handleFiles(e.dataTransfer.files);
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        handleFiles(e.target.files);
+      });
+
+      urlForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const url = urlInput.value.trim();
+        if (url) {
+          gallery.push(url);
+          saveGallery();
+          urlInput.value = '';
+          renderGallery();
+        }
+      });
+
+      if (clearAllBtn) {
+        clearAllBtn.addEventListener('click', () => {
+          if (gallery.length === 0) return;
+          if (confirm(`Sigur doriți să ștergeți toate imaginile din galeria ${label}?`)) {
+            gallery = [];
+            saveGallery();
+            renderGallery();
+          }
+        });
+      }
+
+      renderGallery();
+
+      return { label, getItems: () => gallery, deleteAt: deleteGalleryAt };
+    };
+
+    const galleryCategories = [
+      initGalleryTab('about', 'Despre Noi'),
+    ].filter(Boolean);
+
+    // =====================================================
+    // "Toate Imaginile" – unified overview across every category
+    // =====================================================
+    const overviewContainer = document.getElementById('all-media-overview');
+    if (overviewContainer) {
+      const categoryRegistry = [
+        { label: 'General', getItems: () => mediaList, deleteAt: deleteMediaAt },
+        ...galleryCategories,
+      ];
+
+      const renderOverview = () => {
+        overviewContainer.innerHTML = '';
+
+        categoryRegistry.forEach(cat => {
+          const items = cat.getItems();
+
+          const section = document.createElement('div');
+          section.className = 'admin-card';
+          section.style.cssText = 'padding: 1.5rem; margin-bottom: 1.5rem;';
+
+          const header = document.createElement('h3');
+          header.style.cssText = 'font-family: var(--font-heading); font-size:1.05rem; margin-bottom: 1rem;';
+          header.innerHTML = `${cat.label} <span style="color:var(--text-muted); font-weight:400; font-size:0.85rem;">(${items.length})</span>`;
+          section.appendChild(header);
+
+          if (items.length === 0) {
+            const empty = document.createElement('p');
+            empty.style.cssText = 'color:var(--text-muted); font-size:0.85rem;';
+            empty.textContent = 'Nicio imagine.';
+            section.appendChild(empty);
+          } else {
+            const catGrid = document.createElement('div');
+            catGrid.className = 'media-grid';
+
+            items.forEach((imgSrc, index) => {
+              const item = document.createElement('div');
+              item.className = 'media-item';
+
+              const imgContainer = document.createElement('div');
+              imgContainer.className = 'media-item-img-container';
+
+              const img = document.createElement('img');
+              img.src = resolveAdminSrc(imgSrc);
+              img.alt = `${cat.label} – foto ${index + 1}`;
+              imgContainer.appendChild(img);
+
+              const delBtn = document.createElement('button');
+              delBtn.className = 'delete-btn';
+              delBtn.innerHTML = '&times;';
+              delBtn.title = 'Șterge imaginea';
+              delBtn.addEventListener('click', () => {
+                if (confirm(`Sigur doriți să ștergeți această imagine din ${cat.label}?`)) {
+                  cat.deleteAt(index);
+                }
+              });
+              imgContainer.appendChild(delBtn);
+
+              item.appendChild(imgContainer);
+              catGrid.appendChild(item);
+            });
+
+            section.appendChild(catGrid);
+          }
+
+          overviewContainer.appendChild(section);
+        });
+      };
+
+      refreshOverview = renderOverview;
+      renderOverview();
+    }
   }
 
   // Project Management System
@@ -639,7 +1134,7 @@ document.addEventListener('DOMContentLoaded', () => {
         desc_en: "Stage 2 + Custom Pops & Bangs",
         stock: "431 HP / 550 Nm",
         tuned: "540 HP / 750 Nm",
-        image: "https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop"
+        images: ["https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop"]
       },
       {
         id: 2,
@@ -648,7 +1143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         desc_en: "Stage 1 + DSG Tune",
         stock: "220 HP / 350 Nm",
         tuned: "300 HP / 450 Nm",
-        image: "https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=800&auto=format&fit=crop"
+        images: ["https://images.unsplash.com/photo-1603584173870-7f23fdae1b7a?q=80&w=800&auto=format&fit=crop"]
       },
       {
         id: 3,
@@ -657,7 +1152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         desc_en: "Stage 1 + EGR/DPF Off (Motorsport)",
         stock: "245 HP / 500 Nm",
         tuned: "300 HP / 600 Nm",
-        image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=800&auto=format&fit=crop"
+        images: ["https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=800&auto=format&fit=crop"]
       }
     ];
 
@@ -667,11 +1162,24 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.setItem('mas_projects', JSON.stringify(projects));
     }
 
+    // Migrate legacy single-`image` records to the `images` array
+    let projectsMigrated = false;
+    projects.forEach(p => {
+      if (!Array.isArray(p.images)) {
+        p.images = p.image ? [p.image] : [];
+        delete p.image;
+        projectsMigrated = true;
+      }
+    });
+    if (projectsMigrated) {
+      localStorage.setItem('mas_projects', JSON.stringify(projects));
+    }
+
     const tbody = document.getElementById('projects-tbody');
     const modal = document.getElementById('project-modal');
     const form = document.getElementById('project-form');
     const addBtn = document.getElementById('add-project-btn');
-    
+
     // Modal Form Elements
     const inputId = document.getElementById('project-id');
     const inputTitle = document.getElementById('project-title');
@@ -679,40 +1187,67 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputDescEn = document.getElementById('project-desc-en');
     const inputStock = document.getElementById('project-stock');
     const inputTuned = document.getElementById('project-tuned');
-    const inputImgSrc = document.getElementById('project-img-src');
-    
-    // Media inside modal elements
-    const preview = document.getElementById('project-img-preview');
-    const placeholder = document.getElementById('project-img-placeholder');
+
+    // Media inside modal elements — local array of images for the
+    // project currently being added/edited; only persisted on Save.
+    let modalImages = [];
+    const imgGrid = document.getElementById('project-img-grid');
+    const imgEmpty = document.getElementById('project-img-empty');
     const dropZone = document.getElementById('project-img-drop-zone');
     const fileInput = document.getElementById('project-img-file-input');
+    const urlAddBtn = document.getElementById('project-img-url-add-btn');
     const urlInput = document.getElementById('project-img-url-input');
 
-    const clearImagePreview = () => {
-      preview.src = '';
-      preview.style.display = 'none';
-      placeholder.style.display = 'block';
-      inputImgSrc.value = '';
-      urlInput.value = '';
+    const renderModalImages = () => {
+      imgGrid.innerHTML = '';
+      imgEmpty.style.display = modalImages.length === 0 ? 'block' : 'none';
+
+      modalImages.forEach((src, index) => {
+        const item = document.createElement('div');
+        item.className = 'media-item';
+
+        const imgContainer = document.createElement('div');
+        imgContainer.className = 'media-item-img-container';
+
+        const img = document.createElement('img');
+        img.src = resolveAdminSrc(src);
+        img.alt = `Poza ${index + 1}`;
+        imgContainer.appendChild(img);
+
+        const delBtn = document.createElement('button');
+        delBtn.type = 'button';
+        delBtn.className = 'delete-btn';
+        delBtn.innerHTML = '&times;';
+        delBtn.title = 'Șterge imaginea';
+        delBtn.addEventListener('click', () => {
+          modalImages.splice(index, 1);
+          renderModalImages();
+        });
+        imgContainer.appendChild(delBtn);
+
+        item.appendChild(imgContainer);
+        imgGrid.appendChild(item);
+      });
     };
 
-    const setImagePreview = (src) => {
-      preview.src = src;
-      preview.style.display = 'block';
-      placeholder.style.display = 'none';
-      inputImgSrc.value = src;
+    const clearImagePreview = () => {
+      modalImages = [];
+      urlInput.value = '';
+      renderModalImages();
     };
 
     // Process image uploads inside the modal
     const handleProjectImage = (files) => {
-      const file = files[0];
-      if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setImagePreview(e.target.result);
-        };
-        reader.readAsDataURL(file);
-      }
+      Array.from(files).forEach(file => {
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            modalImages.push(e.target.result);
+            renderModalImages();
+          };
+          reader.readAsDataURL(file);
+        }
+      });
     };
 
     // Modal Drop Zone click
@@ -743,10 +1278,20 @@ document.addEventListener('DOMContentLoaded', () => {
       handleProjectImage(e.target.files);
     });
 
-    urlInput.addEventListener('input', (e) => {
-      const url = e.target.value.trim();
+    const addUrlImage = () => {
+      const url = urlInput.value.trim();
       if (url) {
-        setImagePreview(url);
+        modalImages.push(url);
+        urlInput.value = '';
+        renderModalImages();
+      }
+    };
+
+    urlAddBtn.addEventListener('click', addUrlImage);
+    urlInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        addUrlImage();
       }
     });
 
@@ -757,8 +1302,13 @@ document.addEventListener('DOMContentLoaded', () => {
       
       projects.forEach(p => {
         const tr = document.createElement('tr');
+        const thumb = (p.images && p.images[0]) || '';
+        const imgCount = (p.images && p.images.length) || 0;
         tr.innerHTML = `
-          <td><img src="${p.image}" class="project-thumbnail" alt="${p.title}"></td>
+          <td style="position:relative;">
+            <img src="${thumb}" class="project-thumbnail" alt="${p.title}">
+            ${imgCount > 1 ? `<span style="position:absolute; bottom:0.25rem; right:0.25rem; background:rgba(10,10,10,0.75); color:#fff; font-size:0.7rem; padding:0.1rem 0.4rem;">+${imgCount - 1}</span>` : ''}
+          </td>
           <td><strong>${p.title}</strong></td>
           <td>
             <div style="font-size:0.85rem; color:var(--text-primary);"><strong>RO:</strong> ${p.desc_ro}</div>
@@ -799,13 +1349,11 @@ document.addEventListener('DOMContentLoaded', () => {
       inputDescEn.value = p.desc_en;
       inputStock.value = p.stock;
       inputTuned.value = p.tuned;
-      
-      if (p.image) {
-        setImagePreview(p.image);
-      } else {
-        clearImagePreview();
-      }
-      
+
+      modalImages = Array.isArray(p.images) ? [...p.images] : [];
+      urlInput.value = '';
+      renderModalImages();
+
       openModal('project-modal');
     };
 
@@ -821,15 +1369,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Form Submit (Add / Edit project save)
     form.addEventListener('submit', (e) => {
       e.preventDefault();
-      
+
+      if (!form.checkValidity()) {
+        const firstInvalid = form.querySelector(':invalid');
+        if (firstInvalid) {
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstInvalid.reportValidity();
+        }
+        return;
+      }
+
       const idVal = inputId.value;
       const titleVal = inputTitle.value.trim();
       const descRoVal = inputDescRo.value.trim();
       const descEnVal = inputDescEn.value.trim();
       const stockVal = inputStock.value.trim();
       const tunedVal = inputTuned.value.trim();
-      const imgVal = inputImgSrc.value.trim() || 'https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop'; // fallback default image
-      
+      // Fallback default image if none was added
+      const imagesVal = modalImages.length > 0 ? [...modalImages] : ['https://images.unsplash.com/photo-1555353540-64fd6b3e34b9?q=80&w=800&auto=format&fit=crop'];
+
       if (idVal) {
         // Edit existing project
         const projectIndex = projects.findIndex(proj => proj.id === parseInt(idVal));
@@ -841,7 +1399,7 @@ document.addEventListener('DOMContentLoaded', () => {
             desc_en: descEnVal,
             stock: stockVal,
             tuned: tunedVal,
-            image: imgVal
+            images: imagesVal
           };
         }
       } else {
@@ -853,7 +1411,7 @@ document.addEventListener('DOMContentLoaded', () => {
           desc_en: descEnVal,
           stock: stockVal,
           tuned: tunedVal,
-          image: imgVal
+          images: imagesVal
         };
         projects.push(newProj);
       }
